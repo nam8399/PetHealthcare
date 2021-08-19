@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "237592453303",
+    "firebase_url": "https://pethealthcare-6800d-default-rtdb.firebaseio.com",
+    "project_id": "pethealthcare-6800d",
+    "storage_bucket": "pethealthcare-6800d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237592453303:android:b193ece2ee5216cdd12d32",
+        "android_client_info": {
+          "package_name": "com.example.pethealth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237592453303-5qadvnga3jfkmkrsc8jbfatj8h51kd64.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pethealth",
+            "certificate_hash": "d46ec05698c06372445da89ca3dffbd5166ef31a"
+          }
+        },
+        {
+          "client_id": "237592453303-a0h0tkb4e7gc8hp7jgvkcd9sg2oe2tj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDx1p5HEYnW7fgCpH2JA-Y6g1OolWfmcdc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237592453303-a0h0tkb4e7gc8hp7jgvkcd9sg2oe2tj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237592453303:android:49368732a1d23464d12d32",
+        "android_client_info": {
+          "package_name": "com.example.rfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237592453303-5o313g2tmm818fsbbi7fo57gomcv1mcg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rfirebase",
+            "certificate_hash": "ad16f0832970d39c1d554da55f4dabb0053daabd"
+          }
+        },
+        {
+          "client_id": "237592453303-a0h0tkb4e7gc8hp7jgvkcd9sg2oe2tj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDx1p5HEYnW7fgCpH2JA-Y6g1OolWfmcdc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237592453303-a0h0tkb4e7gc8hp7jgvkcd9sg2oe2tj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
