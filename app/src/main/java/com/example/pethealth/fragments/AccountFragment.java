@@ -1,11 +1,14 @@
 package com.example.pethealth.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,10 +25,12 @@ import com.example.pethealth.ImageDTO;
 import com.example.pethealth.ProfileSelectActivity;
 import com.example.pethealth.R;
 import com.example.pethealth.UploadActivity;
+import com.example.pethealth.UploadedImageActivity;
 import com.example.pethealth.UploadedImageAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -59,7 +65,6 @@ public class AccountFragment extends Fragment {
     private UploadedImageAdapter adapter = new UploadedImageAdapter();
     private int count = -1;
     private GridLayoutManager gridLayoutManager;
-
 
 
     public AccountFragment() {
@@ -101,6 +106,14 @@ public class AccountFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        view.findViewById(R.id.count1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UploadedImageActivity.class);
+                startActivity(intent);
+            }
+        });
         firebaseDatabase = FirebaseDatabase.getInstance();
         recyclerView = view.findViewById(R.id.recyclerview);
 
@@ -117,10 +130,13 @@ public class AccountFragment extends Fragment {
                 gridLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String the_uid = user.getUid();
+
         final UploadedImageAdapter uploadedImageAdapter = new UploadedImageAdapter(imageDTOList, uidList);
         recyclerView.setAdapter(uploadedImageAdapter);//데이터 넣기기
         //옵저버 패턴 --> 변화가 있으면 클라이언트에 알려준다.
-        firebaseDatabase.getReference().child("Profile").addValueEventListener(new ValueEventListener() {
+        firebaseDatabase.getReference().child(the_uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
                 //데이터가 쌓이기 때문에  clear()
@@ -132,7 +148,7 @@ public class AccountFragment extends Fragment {
                     ImageDTO imageDTO = ds.getValue(ImageDTO.class);
                     String uidKey = ds.getKey();
 
-                    imageDTOList.add(0,imageDTO);
+                    imageDTOList.add(imageDTO);
                     uidList.add(uidKey);
                 }
                 uploadedImageAdapter.notifyDataSetChanged();
@@ -146,30 +162,63 @@ public class AccountFragment extends Fragment {
         uploadedImageAdapter.setOnItemClickListener(new UploadedImageAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-               // Toast.makeText(getContext(), "하위", Toast.LENGTH_SHORT).show();
-                storage.getReference().child("photo").child(imageDTOList.get(position).getTitle()).delete().addOnSuccessListener(new OnSuccessListener<Object>() {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                builder.setTitle("").setMessage("");
+
+                builder.setPositiveButton("피드 보기", new DialogInterface.OnClickListener(){
                     @Override
-                    public void onSuccess(Object o) {
-                        onDeleteContent(position);
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        Toast.makeText(getContext(), "OK Click", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), UploadedImageActivity.class);
+                        intent.putExtra("position", position);
+                        startActivity(intent);
                     }
                 });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+
+                        // Toast.makeText(getContext(), "하위", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                builder.setNeutralButton("삭제하기", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        storage.getReference().child(the_uid).child(imageDTOList.get(position).getTitle()).delete().addOnSuccessListener(new OnSuccessListener<Object>() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                onDeleteContent(position);
+                            }
+                        });
+                    }
+                    private void onDeleteContent(int position)
+                    {
+                        firebaseDatabase.getReference().child(the_uid).child(uidList.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getContext(), "삭제 성공", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                System.out.println("error: "+e.getMessage());
+                                Toast.makeText(getContext(), "삭제 실패", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
 
-            private void onDeleteContent(int position)
-            {
-                firebaseDatabase.getReference().child("Profile").child(uidList.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getContext(), "삭제 성공", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println("error: "+e.getMessage());
-                        Toast.makeText(getContext(), "삭제 실패", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
         });
 /*
         Button buttonInsert = (Button)view.findViewById(R.id.button_main_insert);

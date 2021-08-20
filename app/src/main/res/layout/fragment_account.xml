@@ -136,30 +136,18 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <LinearLayout
+            <Button
                 app:layout_constraintStart_toStartOf="parent"
                 android:id="@+id/count1"
+                android:text="피드보기"
+                android:textSize="11dp"
                 android:layout_margin="10dp"
                 app:layout_constraintEnd_toStartOf="@id/count2"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:orientation="vertical"
                 tools:ignore="MissingConstraints">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    android:layout_gravity="center">
-                </TextView>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="게시물"
-                    android:layout_gravity="center">
-                </TextView>
-            </LinearLayout>
+            </Button>
             <LinearLayout
                 app:layout_constraintStart_toEndOf="@id/count1"
                 android:id="@+id/count2"

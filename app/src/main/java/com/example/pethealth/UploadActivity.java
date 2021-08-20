@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -60,7 +61,7 @@ public class UploadActivity extends AppCompatActivity {
         btnBack = (Button)findViewById(R.id.btn_profile_back);
         btnOk = (Button)findViewById(R.id.btn_profile_Ok);
         ivProfile = (ImageView)findViewById(R.id.iv_profile);
-        etTitle = (TextInputEditText)findViewById(R.id.dt_profile_title);
+      //  etTitle = (TextInputEditText)findViewById(R.id.dt_profile_title);
         etDesc =(TextInputEditText)findViewById(R.id.dt_profile_desc);
     }
     private void listener()
@@ -134,9 +135,11 @@ public class UploadActivity extends AppCompatActivity {
             progressDialog.show();
             // Create a storage reference from our app
             StorageReference storageRef = storage.getReference();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String the_uid = user.getUid();
 
             Uri file = Uri.fromFile(new File(uri));
-            final StorageReference riversRef = storageRef.child("photo/"+file.getLastPathSegment());
+            final StorageReference riversRef = storageRef.child(the_uid+"/"+file.getLastPathSegment());
             UploadTask uploadTask = riversRef.putFile(file);
 
 
@@ -165,13 +168,13 @@ public class UploadActivity extends AppCompatActivity {
                         imageDTO.setImageUrl(downloadUrl.toString());
                         imageDTO.setTitle(file.getLastPathSegment());
                         imageDTO.setDescription(etDesc.getText().toString());
-//                      imageDTO.setUid(mAuth.getCurrentUser().getUid());
+                        imageDTO.setUid(mAuth.getCurrentUser().getUid());
 //                      imageDTO.setUserid(mAuth.getCurrentUser().getEmail());
 
                         //image 라는 테이블에 json 형태로 담긴다.
                         //database.getReference().child("Profile").setValue(imageDTO);
                         //  .push()  :  데이터가 쌓인다.
-                        database.getReference().child("Profile").push().setValue(imageDTO);
+                        database.getReference().child(the_uid).push().setValue(imageDTO);
 
                         /*Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                         startActivity(intent);*/
