@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UploadedImageActivity"></activity>
+        <activity android:name=".UploadedImageActivity" />
         <activity android:name=".UploadActivity" />
         <activity android:name=".ProfileSelectActivity" />
         <activity android:name=".LoginActivity">
@@ -32,8 +32,8 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".bcsActivity" />
-        <activity android:name=".PetProfileFix"/>
-        <activity android:name=".PetProfileFix2"/>
+        <activity android:name=".PetProfileFix" />
+        <activity android:name=".PetProfileFix2" />
     </application>
 
 </manifest>

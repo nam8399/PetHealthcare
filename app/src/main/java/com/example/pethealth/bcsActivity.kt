@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
@@ -13,10 +12,13 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.example.pethealth.databinding.ActivityBcsBinding
-import com.example.pethealth.databinding.ActivityMainBinding
 import com.example.pethealth.ml.MobilenetV110224Quant
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -49,6 +51,8 @@ class bcsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+
+
         make_prediction = findViewById(R.id.button2)
         text_view = findViewById(R.id.textView)
         img_view = findViewById(R.id.imageView)
@@ -59,7 +63,7 @@ class bcsActivity : AppCompatActivity() {
 
         binding.btnGallery.setOnClickListener {
             Log.d("mssg", "button pressed")
-           galleryCheckPermission()
+            galleryCheckPermission()
         }
 
 
@@ -81,14 +85,35 @@ class bcsActivity : AppCompatActivity() {
             var max = getMax(outputFeature0.floatArray)
 
             text_view.setText(labels[max])
-
+            var result = labels[max]
 // Releases model resources if no longer used.
+            // BCS 결과값 Firebase에 저장
+            binding.btnResult.setOnClickListener {
+                val database : FirebaseDatabase = FirebaseDatabase.getInstance()
+                val user = FirebaseAuth.getInstance().currentUser
+                val the_uid = user!!.uid
+                val pet = database.getReference(the_uid)
+                val the_pid = pet!!.key
+
+                val myRef : DatabaseReference = database.getReference("PetAccount" + the_pid).child("Petbcs")
+
+
+                myRef.setValue(result)
+                if(result != null) {
+                    Toast.makeText(this, "결과가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "측정결과가 없습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
             model.close()
         })
 
         binding.btnCamera.setOnClickListener {
             cameraCheckPermission()
         }
+
+        //BCS 결과값 Firebase 저장
+
 
 
 
@@ -257,4 +282,3 @@ class bcsActivity : AppCompatActivity() {
 
 
 }
-

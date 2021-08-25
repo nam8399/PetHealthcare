@@ -13,25 +13,20 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent">
-        <ImageView
+        <ImageButton
+            android:id="@+id/btn_logout"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:src="@drawable/ic_settings">
-        </ImageView>
-        <ImageView
-            android:src="@drawable/pet_toolbar"
-            android:layout_marginTop="15dp"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp">
-        </ImageView>
+        </ImageButton>
         <ImageView
             android:src="@drawable/pet_mytoolbar2"
             android:layout_marginTop="15dp"
-            android:layout_width="100dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </ImageView>
 

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.pethealth.ImageDTO;
+import com.example.pethealth.LoginActivity;
 import com.example.pethealth.ProfileSelectActivity;
 import com.example.pethealth.R;
 import com.example.pethealth.UploadActivity;
@@ -51,7 +52,7 @@ import java.util.List;
 public class AccountFragment extends Fragment {
     private TextView tv_result;
     private ImageView iv_profile;
-    private FirebaseAuth auth;        // 파이어베이스 인증 객체
+    private FirebaseAuth auth;// 파이어베이스 인증 객체
 
     private final int GALLERY_CODE = 10;
     ImageView photo;
@@ -73,16 +74,23 @@ public class AccountFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String the_uid = user.getUid();
 
         photo = (ImageView)view.findViewById(R.id.account_iv_profile);
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
-        StorageReference submitProfile = storageReference.child("images/1");
+        StorageReference submitProfile = storageReference.child("images" + the_uid + "/1");
         submitProfile.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(getContext()).load(uri).into(photo);
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Glide.with(getContext()).load(uri).into(photo);
+
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -96,6 +104,16 @@ public class AccountFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ProfileSelectActivity.class);
                 startActivity(intent);
+            }
+        });
+        //로그아웃 구현
+        view.findViewById(R.id.btn_logout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                Toast.makeText(getContext(),"로그아웃에 성공하였습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -129,9 +147,6 @@ public class AccountFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 gridLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String the_uid = user.getUid();
 
         final UploadedImageAdapter uploadedImageAdapter = new UploadedImageAdapter(imageDTOList, uidList);
         recyclerView.setAdapter(uploadedImageAdapter);//데이터 넣기기
@@ -171,7 +186,7 @@ public class AccountFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        Toast.makeText(getContext(), "OK Click", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "OK Click", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(), UploadedImageActivity.class);
                         intent.putExtra("position", position);
                         startActivity(intent);
@@ -251,7 +266,7 @@ public class AccountFragment extends Fragment {
         submitProfile.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(getContext()).load(uri).into(photo);
+                //Glide.with(getContext()).load(uri).into(photo);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

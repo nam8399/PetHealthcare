@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.example.pethealth.fragments.AccountFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -75,7 +77,9 @@ public class ProfileSelectActivity extends AppCompatActivity {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.KOREA);
         Date now = new Date();
         String fileName = formatter.format(now);
-        storageReference = FirebaseStorage.getInstance().getReference("images/1");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String the_uid = user.getUid();
+        storageReference = FirebaseStorage.getInstance().getReference("images" + the_uid + "/1");
 
 
         storageReference.putFile(imageUri)
