@@ -1,124 +1,118 @@
 package com.example.pethealth;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.loader.content.CursorLoader;
-
-import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.pethealth.fragments.PetAccount;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
-public class UploadActivity extends AppCompatActivity {
+public class PetProfileFix2 extends AppCompatActivity {
+
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
     private FirebaseDatabase database;
 
-    private Button btnBack, btnOk;
-    private ImageView ivProfile;
-    private TextInputEditText etTitle, etDesc;
     private String imageUrl="";
     private int GALLEY_CODE = 10;
+
+    private ImageView et_image;
+    private EditText et_name, et_birthday;
+    private Spinner et_species;
+    private RadioGroup et_radiogroup;
+    private RadioButton et_gender, et_gender2;
+    private Button btn_Petprofile;
+    private String str_result, sfName;
     ProgressDialog progressDialog;
 
-    int nCurrentPermission = 0;
-    static final int PERMISSIONS_REQUEST = 0x00000001;
 
+    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference conditionRef = mRootRef.child("Size");
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    private final int GET_GALLERY_IMAGE = 200;
+    private ImageView imageview, imageview2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload);
-        OnCheckPermission();
-
+        setContentView(R.layout.fragment_petprofile);
 
         mAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
-        initView();
+
+        imageview = findViewById(R.id.imageView);
+        imageview2 = findViewById(R.id.imageView2);
+        btn_Petprofile = findViewById(R.id.btn_Petprofile);
+        et_image = findViewById(R.id.et_image);
+        et_name = findViewById(R.id.et_name);
+        et_birthday = findViewById(R.id.et_birth);
+        et_species = findViewById(R.id.et_species);
+        et_radiogroup = findViewById(R.id.et_radiogroup);
+        et_gender = findViewById(R.id.et_gender);
+        et_gender2 = findViewById(R.id.et_gender2);
+
+        Spinner speciesSpinner = findViewById(R.id.et_species);
+        ArrayAdapter speciesAdapter = ArrayAdapter.createFromResource(this, R.array.dog_species, android.R.layout.simple_spinner_item);
+        speciesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        speciesSpinner.setAdapter(speciesAdapter);
+
         listener();
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void OnCheckPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                Toast.makeText(this, "앱 실행을 위해서는 권한을 설정해야 합니다.", Toast.LENGTH_SHORT).show();
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST);
-            }
-            else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST);
-            }
-        }
-    }
-
-
-    public void onRequestPermissionResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "앱 실행을 위한 권한이 설정 되었습니다.", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Toast.makeText(this, "앱 실행을 위한 권한이 취소 되었습니다.", Toast.LENGTH_LONG).show();
-                }
-
-                break;
-        }
-    }
-
-    private void initView()
-    {
-        btnBack = (Button)findViewById(R.id.btn_profile_back);
-        btnOk = (Button)findViewById(R.id.btn_profile_Ok);
-        ivProfile = (ImageView)findViewById(R.id.iv_profile);
-      //  etTitle = (TextInputEditText)findViewById(R.id.dt_profile_title);
-        etDesc =(TextInputEditText)findViewById(R.id.dt_profile_desc);
-    }
-    private void listener()
-    {
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        et_radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-
-                startActivityForResult(intent,GALLEY_CODE);
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if(i == R.id.et_gender) {
+                    Toast.makeText(PetProfileFix2.this,"수컷입니다", Toast.LENGTH_SHORT).show();
+                    str_result = et_gender.getText().toString();
+                } else if(i == R.id.et_gender2) {
+                    Toast.makeText(PetProfileFix2.this,"암컷입니다", Toast.LENGTH_SHORT).show();
+                    str_result = et_gender2.getText().toString();
+                }
             }
         });
-        btnOk.setOnClickListener(new View.OnClickListener() {
+
+
+    }
+
+    private void listener()
+    {
+        btn_Petprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //파이어베이스에 파일 업로드와 데이터 베이스 저장
@@ -127,7 +121,7 @@ public class UploadActivity extends AppCompatActivity {
         });
         //이미지 업로드
 
-        ivProfile.setOnClickListener(new View.OnClickListener() {
+        imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //로컬 사진첩으로 넘어간다.
@@ -150,7 +144,7 @@ public class UploadActivity extends AppCompatActivity {
             Glide.with(getApplicationContext())
                     .load(imageUrl)
                     .apply(cropOptions.optionalCircleCrop())
-                    .into(ivProfile);
+                    .into(imageview2);
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -201,23 +195,25 @@ public class UploadActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful())
                     {
-                        Toast.makeText(UploadActivity.this, "업로드 성공", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PetProfileFix2.this, "업로드 성공", Toast.LENGTH_SHORT).show();
 
                         //파이어베이스에 데이터베이스 업로드
                         @SuppressWarnings("VisibleForTests")
                         Uri downloadUrl = task.getResult();
 
-                        ImageDTO imageDTO = new ImageDTO();
-                        imageDTO.setImageUrl(downloadUrl.toString());
-                        imageDTO.setTitle(file.getLastPathSegment());
-                        imageDTO.setDescription(etDesc.getText().toString());
-                        imageDTO.setUid(mAuth.getCurrentUser().getUid());
+                        PetAccount petAccount = new PetAccount();
+                        petAccount.setImage(downloadUrl.toString());
+                        petAccount.setBirthday(et_birthday.getText().toString());
+                        petAccount.setName(et_name.getText().toString());
+                        petAccount.setGender(et_gender.getText().toString());
+                        petAccount.setSpecies(et_species.getSelectedItem().toString());
+                        petAccount.setUid(mAuth.getCurrentUser().getUid());
 //                      imageDTO.setUserid(mAuth.getCurrentUser().getEmail());
 
                         //image 라는 테이블에 json 형태로 담긴다.
                         //database.getReference().child("Profile").setValue(imageDTO);
                         //  .push()  :  데이터가 쌓인다.
-                        database.getReference().child(the_uid).push().setValue(imageDTO);
+                        database.getReference().child("PetAccount" + the_uid).push().setValue(petAccount);
 
                         /*Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                         startActivity(intent);*/
@@ -232,7 +228,7 @@ public class UploadActivity extends AppCompatActivity {
 
         }catch (NullPointerException e)
         {
-            Toast.makeText(UploadActivity.this, "이미지 선택 안함", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PetProfileFix2.this, "이미지 선택 안함", Toast.LENGTH_SHORT).show();
         }
     }
 }

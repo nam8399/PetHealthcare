@@ -32,6 +32,8 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".bcsActivity" />
+        <activity android:name=".PetProfileFix"/>
+        <activity android:name=".PetProfileFix2"/>
     </application>
 
 </manifest>

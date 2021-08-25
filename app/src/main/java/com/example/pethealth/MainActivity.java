@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.pethealth.fragments.AccountFragment;
-import com.example.pethealth.fragments.ProfileFragment;
 import com.example.pethealth.fragments.HomeFragment;
+import com.example.pethealth.fragments.ProfileMainFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Example 1");
+
 
 
         animatedBottomBar = findViewById(R.id.animatedBottomBar);
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new HomeFragment();
                         break;
                     case R.id.book:
-                        fragment = new ProfileFragment();
+                        fragment = new ProfileMainFragment();
                         break;
                     case R.id.account:
                         fragment = new AccountFragment();
