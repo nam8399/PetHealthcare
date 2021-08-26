@@ -52,7 +52,7 @@ public class PetProfileFix2 extends AppCompatActivity {
     private int GALLEY_CODE = 10;
 
     private ImageView et_image;
-    private EditText et_name, et_birthday;
+    private EditText et_name, et_birthday, et_weight;
     private Spinner et_species;
     private RadioGroup et_radiogroup;
     private RadioButton et_gender, et_gender2;
@@ -83,6 +83,7 @@ public class PetProfileFix2 extends AppCompatActivity {
         et_name = findViewById(R.id.et_name);
         et_birthday = findViewById(R.id.et_birth);
         et_species = findViewById(R.id.et_species);
+        et_weight = findViewById(R.id.et_weight);
         et_radiogroup = findViewById(R.id.et_radiogroup);
         et_gender = findViewById(R.id.et_gender);
         et_gender2 = findViewById(R.id.et_gender2);
@@ -205,9 +206,9 @@ public class PetProfileFix2 extends AppCompatActivity {
                         petAccount.setImage(downloadUrl.toString());
                         petAccount.setBirthday(et_birthday.getText().toString());
                         petAccount.setName(et_name.getText().toString());
-                        petAccount.setGender(et_gender.getText().toString());
+                        petAccount.setGender(str_result);
                         petAccount.setSpecies(et_species.getSelectedItem().toString());
-                        petAccount.setUid(mAuth.getCurrentUser().getUid());
+                        petAccount.setWeight(et_weight.getText().toString());
 //                      imageDTO.setUserid(mAuth.getCurrentUser().getEmail());
 
                         //image 라는 테이블에 json 형태로 담긴다.

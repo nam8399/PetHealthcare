@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="#F5F5F5"
-    tools:context=".fragments.ProfileFragment">
+    android:background="#F5F5F5">
 
     <ImageView
         android:id="@+id/imageView"
@@ -345,7 +344,7 @@
                 android:drawablePadding="5dp"
                 android:gravity="start"
                 android:hint=" 체중을 입력하세요"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:textAlignment="viewStart" />
 
         </LinearLayout>
