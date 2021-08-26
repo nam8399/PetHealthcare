@@ -24,6 +24,16 @@ public class PetdataAdapter extends RecyclerView.Adapter<PetdataAdapter.ViewHold
     private FirebaseStorage storage;
     private Context context;
 
+    public interface OnItemClickListener {
+        void onItemClick(View v, int position) ;
+    }
+
+    private PetdataAdapter.OnItemClickListener onItemClickListener = null;
+
+    public void setOnItemClickListener(PetdataAdapter.OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
     public PetdataAdapter(List<PetAccount> petAccountList, List<String> uidList){
         this.petAccountList = petAccountList;
         this.uidList = uidList;

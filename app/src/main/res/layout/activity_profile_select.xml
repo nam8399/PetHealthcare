@@ -20,14 +20,16 @@
 
     <ImageView
         android:id="@+id/firebaseimage"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/selectImagebtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:layout_width="304dp"
+        android:layout_height="262dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/selectImagebtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.067"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
@@ -35,21 +37,46 @@
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="208dp"
         android:text="사진 고르기"
         app:layout_constraintBottom_toTopOf="@+id/uploadimagebtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <EditText
+        android:id="@+id/et_rename"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:hint="변경할 이름을 적어주세요."
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectImagebtn" />
+
+    <EditText
+        android:id="@+id/et_message"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:hint="상태 메세지를 적어주세요."
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/uploadimagebtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_rename" />
+
     <Button
         android:id="@+id/uploadimagebtn"
         android:layout_width="0dp"
         android:layout_height="70dp"
-        android:layout_marginBottom="168dp"
         android:layout_marginHorizontal="16dp"
-        android:text="사진 업로드"
+        android:layout_marginBottom="108dp"
+        android:text="변경하기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

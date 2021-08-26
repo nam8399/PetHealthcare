@@ -21,15 +21,23 @@
             android:layout_marginRight="20dp"
             android:src="@drawable/ic_settings">
         </ImageView>
-
         <Button
             android:id="@+id/btn_petprofilefix"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
+            android:layout_marginLeft="100dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="200dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:text="프로필 수정">
+        </Button>
+
+        <Button
+            android:id="@+id/btn_petprofiledelete"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="프로필 삭제">
         </Button>
 
     </LinearLayout>
@@ -277,7 +285,7 @@
                 android:background="@drawable/edge"
                 android:drawablePadding="5dp"
                 android:gravity="start"
-                android:hint=" 사료 칼로리를 입력하세요"
+                android:hint=" 사료 칼로리 입력 (kcal/kg)"
                 android:inputType="textPostalAddress"
                 android:textAlignment="viewStart" />
         </LinearLayout>

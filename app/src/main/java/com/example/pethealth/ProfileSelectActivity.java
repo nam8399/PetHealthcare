@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -19,6 +20,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -33,7 +36,10 @@ public class ProfileSelectActivity extends AppCompatActivity {
     StorageReference storageReference;
     ProgressDialog progressDialog;
     Button selectImagebtn, uploadimagebtn;
+    EditText et_rename, et_message;
     ImageView firebaseimage;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = database.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,9 @@ public class ProfileSelectActivity extends AppCompatActivity {
         selectImagebtn = (Button)findViewById(R.id.selectImagebtn);
         uploadimagebtn = (Button)findViewById(R.id.uploadimagebtn);
         firebaseimage = (ImageView)findViewById(R.id.firebaseimage);
+
+        et_rename = findViewById(R.id.et_rename);
+        et_message = findViewById(R.id.et_message);
 
         selectImagebtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +70,7 @@ public class ProfileSelectActivity extends AppCompatActivity {
 
 
                 uploadImage();
+                addUserInfo(et_rename.getText().toString(), et_message.getText().toString());
 
             }
         });
@@ -129,5 +139,12 @@ public class ProfileSelectActivity extends AppCompatActivity {
 
 
         }
+    }
+    private void addUserInfo(String name, String message){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String the_uid = user.getUid();
+
+        UserInfo userinfo = new UserInfo(name, message);
+        databaseReference.child(the_uid).child("Userinfo").setValue(userinfo);
     }
 }

@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pethealth.fragments.PetAccount;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -49,7 +51,7 @@ public class PetProfileFix extends AppCompatActivity {
     private EditText et_weight2, et_kcal;
     private RadioGroup rd_ask, rd_feed;
     private RadioButton et_auto, et_manual, ask_1, ask_16, ask_18, ask_2;
-    private Button btn_feed;
+    private Button btn_feed, btn_petprofilefix, btn_petprofiledelete;
     private double flt_result;
     private String str_feed;
      List<Object> Array = new ArrayList<Object>();
@@ -69,6 +71,7 @@ public class PetProfileFix extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference();
         recyclerView = findViewById(R.id.recyclerview2);
+        btn_petprofilefix = findViewById(R.id.btn_petprofilefix);
 
 
         btn_feed = findViewById(R.id.btn_feed);
@@ -104,18 +107,53 @@ public class PetProfileFix extends AppCompatActivity {
             }
         }, 150);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String the_uid = user.getUid();
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this){
             @Override
             public boolean canScrollVertically() {
                 return false;//세로스크롤 차단
             }
         };
+
+        btn_petprofilefix.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PetProfileFix.this, PetProfileFix2.class);
+                startActivity(intent);
+            }
+        });
+
         recyclerView.setLayoutManager(layoutManager);
         final PetdataAdapter petdataAdapter = new PetdataAdapter(petAccountList, uidList);
         recyclerView.setAdapter(petdataAdapter);//데이터 넣기기
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String the_uid = user.getUid();
+        petdataAdapter.setOnItemClickListener(new PetdataAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                btn_petprofiledelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDatabase.getReference().child("PetAccount" +the_uid).child(uidList.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(PetProfileFix.this, "삭제 성공", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                System.out.println("error: "+e.getMessage());
+                                Toast.makeText(PetProfileFix.this, "삭제 실패", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+
+            }
+
+        });
+
 
 
         mDatabase.getReference().child("PetAccount" + the_uid).addValueEventListener(new ValueEventListener() {
