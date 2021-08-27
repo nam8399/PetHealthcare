@@ -121,8 +121,27 @@ public class PetProfileFix extends AppCompatActivity {
         btn_petprofilefix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PetProfileFix.this, PetProfileFix2.class);
+                Intent intent = new Intent(PetProfileFix.this, PetProfileUpdate.class);
                 startActivity(intent);
+            }
+        });
+
+        btn_petprofiledelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDatabase.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(PetProfileFix.this, "삭제 성공", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("error: "+e.getMessage());
+                        Toast.makeText(PetProfileFix.this, "삭제 실패", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -214,24 +233,7 @@ public class PetProfileFix extends AppCompatActivity {
             }
         });
 
-        btn_petprofiledelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDatabase.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(PetProfileFix.this, "삭제 성공", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println("error: "+e.getMessage());
-                        Toast.makeText(PetProfileFix.this, "삭제 실패", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+
 
 
 

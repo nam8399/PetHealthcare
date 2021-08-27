@@ -206,7 +206,7 @@ public class AccountFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        storage.getReference().child(the_uid).child("Petstagram").child(imageDTOList.get(position).getTitle()).delete().addOnSuccessListener(new OnSuccessListener<Object>() {
+                        storage.getReference().child(the_uid).child(imageDTOList.get(position).getTitle()).delete().addOnSuccessListener(new OnSuccessListener<Object>() {
                             @Override
                             public void onSuccess(Object o) {
                                 onDeleteContent(position);
