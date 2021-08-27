@@ -71,7 +71,7 @@ public class ProfileMainFragment extends Fragment implements PetAdapter.ListItem
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String the_uid = user.getUid();
 
-        databaseReference = database.getReference("PetAccount" + the_uid); // DB테이블 연결
+        databaseReference = database.getReference(the_uid+"/PetAccount"); // DB테이블 연결
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
@@ -122,7 +122,7 @@ public class ProfileMainFragment extends Fragment implements PetAdapter.ListItem
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String the_uid = user.getUid();
 
-        databaseReference = database.getReference("PetAccount" + the_uid); // DB테이블 연결
+        databaseReference = database.getReference(the_uid + "/PetAccount"); // DB테이블 연결
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NotNull DataSnapshot dataSnapshot) {

@@ -151,7 +151,7 @@ public class AccountFragment extends Fragment {
         final UploadedImageAdapter uploadedImageAdapter = new UploadedImageAdapter(imageDTOList, uidList);
         recyclerView.setAdapter(uploadedImageAdapter);//데이터 넣기기
         //옵저버 패턴 --> 변화가 있으면 클라이언트에 알려준다.
-        firebaseDatabase.getReference().child(the_uid).addValueEventListener(new ValueEventListener() {
+        firebaseDatabase.getReference().child(the_uid).child("Petstagram").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
                 //데이터가 쌓이기 때문에  clear()
@@ -206,7 +206,7 @@ public class AccountFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        storage.getReference().child(the_uid).child(imageDTOList.get(position).getTitle()).delete().addOnSuccessListener(new OnSuccessListener<Object>() {
+                        storage.getReference().child(the_uid).child("Petstagram").child(imageDTOList.get(position).getTitle()).delete().addOnSuccessListener(new OnSuccessListener<Object>() {
                             @Override
                             public void onSuccess(Object o) {
                                 onDeleteContent(position);
@@ -215,7 +215,7 @@ public class AccountFragment extends Fragment {
                     }
                     private void onDeleteContent(int position)
                     {
-                        firebaseDatabase.getReference().child(the_uid).child(uidList.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        firebaseDatabase.getReference().child(the_uid).child("Petstagram").child(uidList.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Toast.makeText(getContext(), "삭제 성공", Toast.LENGTH_SHORT).show();

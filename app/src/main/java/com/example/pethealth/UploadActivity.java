@@ -217,7 +217,7 @@ public class UploadActivity extends AppCompatActivity {
                         //image 라는 테이블에 json 형태로 담긴다.
                         //database.getReference().child("Profile").setValue(imageDTO);
                         //  .push()  :  데이터가 쌓인다.
-                        database.getReference().child(the_uid).push().setValue(imageDTO);
+                        database.getReference().child(the_uid).child("Petstagram").push().setValue(imageDTO);
 
                         /*Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                         startActivity(intent);*/

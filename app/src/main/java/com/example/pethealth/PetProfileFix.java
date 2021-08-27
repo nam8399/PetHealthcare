@@ -72,6 +72,7 @@ public class PetProfileFix extends AppCompatActivity {
         mReference = mDatabase.getReference();
         recyclerView = findViewById(R.id.recyclerview2);
         btn_petprofilefix = findViewById(R.id.btn_petprofilefix);
+        btn_petprofiledelete = findViewById(R.id.btn_petprofiledelete);
 
 
         btn_feed = findViewById(R.id.btn_feed);
@@ -129,42 +130,23 @@ public class PetProfileFix extends AppCompatActivity {
         final PetdataAdapter petdataAdapter = new PetdataAdapter(petAccountList, uidList);
         recyclerView.setAdapter(petdataAdapter);//데이터 넣기기
 
-        petdataAdapter.setOnItemClickListener(new PetdataAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                btn_petprofiledelete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mDatabase.getReference().child("PetAccount" +the_uid).child(uidList.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(PetProfileFix.this, "삭제 성공", Toast.LENGTH_SHORT).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                System.out.println("error: "+e.getMessage());
-                                Toast.makeText(PetProfileFix.this, "삭제 실패", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
-
-            }
-
-        });
 
 
 
-        mDatabase.getReference().child("PetAccount" + the_uid).addValueEventListener(new ValueEventListener() {
+
+        mDatabase.getReference().child(the_uid).child("PetAccount").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
                 //데이터가 쌓이기 때문에  clear()
                 petAccountList.clear();
+                uidList.clear();
                 for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
                 {
                     PetAccount petAccount = ds.getValue(PetAccount.class);
+                    String uidKey = ds.getKey();
+
                     petAccountList.add(petAccount);
+                    uidList.add(uidKey);
                 }
                 petdataAdapter.notifyDataSetChanged();
             }
@@ -229,6 +211,25 @@ public class PetProfileFix extends AppCompatActivity {
                     Toast.makeText(PetProfileFix.this, "자동 설정되었습니다.", Toast.LENGTH_SHORT).show();
                     str_feed = "Auto";
                 }
+            }
+        });
+
+        btn_petprofiledelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDatabase.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(PetProfileFix.this, "삭제 성공", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("error: "+e.getMessage());
+                        Toast.makeText(PetProfileFix.this, "삭제 실패", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
