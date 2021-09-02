@@ -140,12 +140,15 @@ public class PetProfileFix2 extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == GALLEY_CODE)
         {
-            imageUrl = getRealPathFromUri(data.getData());
-            RequestOptions cropOptions = new RequestOptions();
-            Glide.with(getApplicationContext())
-                    .load(imageUrl)
-                    .apply(cropOptions.optionalCircleCrop())
-                    .into(imageview2);
+            if (data != null) {
+                imageUrl = getRealPathFromUri(data.getData());
+                RequestOptions cropOptions = new RequestOptions();
+                Glide.with(getApplicationContext())
+                        .load(imageUrl)
+                        .apply(cropOptions.optionalCircleCrop())
+                        .into(imageview2);
+            }
+
         }
 
         super.onActivityResult(requestCode, resultCode, data);

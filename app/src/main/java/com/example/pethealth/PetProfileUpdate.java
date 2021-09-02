@@ -41,6 +41,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PetProfileUpdate extends AppCompatActivity {
 
@@ -58,6 +60,7 @@ public class PetProfileUpdate extends AppCompatActivity {
     private RadioButton et_gender, et_gender2;
     private Button btn_Petprofile;
     private String str_result, sfName;
+    private List<String> uidList = new ArrayList<>();
     ProgressDialog progressDialog;
 
 
@@ -88,6 +91,8 @@ public class PetProfileUpdate extends AppCompatActivity {
         et_gender = findViewById(R.id.et_gender);
         et_gender2 = findViewById(R.id.et_gender2);
 
+
+
         Spinner speciesSpinner = findViewById(R.id.et_species);
         ArrayAdapter speciesAdapter = ArrayAdapter.createFromResource(this, R.array.dog_species, android.R.layout.simple_spinner_item);
         speciesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -105,6 +110,30 @@ public class PetProfileUpdate extends AppCompatActivity {
                     Toast.makeText(PetProfileUpdate.this,"암컷입니다", Toast.LENGTH_SHORT).show();
                     str_result = et_gender2.getText().toString();
                 }
+            }
+        });
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String the_uid = user.getUid();
+
+        database.getReference().child(the_uid).child("PetAccount").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+                //데이터가 쌓이기 때문에  clear()
+                uidList.clear();
+                for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
+                {
+                    PetAccount petAccount = ds.getValue(PetAccount.class);
+                    String uidKey = ds.getKey();
+
+                    uidList.add(uidKey);
+                }
+               // petdataAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -134,18 +163,23 @@ public class PetProfileUpdate extends AppCompatActivity {
         });
     }
 
+
+
+
     //사진 고른 후 돌아오는 코드
     //로컬 파일에서 업로드
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == GALLEY_CODE)
         {
-            imageUrl = getRealPathFromUri(data.getData());
-            RequestOptions cropOptions = new RequestOptions();
-            Glide.with(getApplicationContext())
-                    .load(imageUrl)
-                    .apply(cropOptions.optionalCircleCrop())
-                    .into(imageview2);
+            if (data != null) {
+                imageUrl = getRealPathFromUri(data.getData());
+                RequestOptions cropOptions = new RequestOptions();
+                Glide.with(getApplicationContext())
+                        .load(imageUrl)
+                        .apply(cropOptions.optionalCircleCrop())
+                        .into(imageview2);
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -210,11 +244,13 @@ public class PetProfileUpdate extends AppCompatActivity {
                         petAccount.setSpecies(et_species.getSelectedItem().toString());
                         petAccount.setWeight(et_weight.getText().toString());
 //                      imageDTO.setUserid(mAuth.getCurrentUser().getEmail());
+                        Intent intent = getIntent();
+                        int position = intent.getIntExtra("position", 0);
 
                         //image 라는 테이블에 json 형태로 담긴다.
                         //database.getReference().child("Profile").setValue(imageDTO);
                         //  .push()  :  데이터가 쌓인다.
-                        database.getReference().child(the_uid).child("PetAccount").push().setValue(petAccount);
+                        database.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).setValue(petAccount);
 
                         /*Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                         startActivity(intent);*/

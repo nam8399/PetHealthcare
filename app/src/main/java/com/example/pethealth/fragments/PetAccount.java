@@ -8,6 +8,7 @@ public class PetAccount {
     private String gender;
     private String weight;
     private String uid;
+    private String bcs;
 
     public String getWeight() {
         return weight;
@@ -45,4 +46,7 @@ public class PetAccount {
 
     public  void setGender(String gender) { this.gender = gender; }
 
+    public String getBcs() { return bcs; }
+
+    public  void setBcs(String gender) { this.bcs = bcs; }
 }

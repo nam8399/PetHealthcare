@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PetProfileUpdate"></activity>
+        <activity android:name=".BcsreportActivity"></activity>
+        <activity android:name=".PetProfileUpdate" />
         <activity android:name=".UploadedImageActivity" />
         <activity android:name=".UploadActivity" />
         <activity android:name=".ProfileSelectActivity" />
@@ -35,6 +36,7 @@
         <activity android:name=".bcsActivity" />
         <activity android:name=".PetProfileFix" />
         <activity android:name=".PetProfileFix2" />
+        <activity android:name=".PetProfileFeed" />
     </application>
 
 </manifest>

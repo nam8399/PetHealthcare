@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -36,7 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PetProfileFix extends AppCompatActivity {
+public class PetProfileFeed extends AppCompatActivity {
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
@@ -52,8 +51,7 @@ public class PetProfileFix extends AppCompatActivity {
     private EditText et_weight2, et_kcal;
     private RadioGroup rd_ask, rd_feed;
     private RadioButton et_auto, et_manual, ask_1, ask_16, ask_18, ask_2;
-    private Button btn_petprofilefix, btn_petprofiledelete;
-    private ImageView btn_bcs, btn_feed, btn_foodreport, btn_bcsreport;
+    private Button btn_feed, btn_petprofilefix, btn_petprofiledelete;
     private double flt_result;
     private String str_feed;
      List<Object> Array = new ArrayList<Object>();
@@ -68,17 +66,37 @@ public class PetProfileFix extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_petprofilefix);
+        setContentView(R.layout.activity_petprofilefeed);
 
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference();
         recyclerView = findViewById(R.id.recyclerview2);
         btn_petprofilefix = findViewById(R.id.btn_petprofilefix);
         btn_petprofiledelete = findViewById(R.id.btn_petprofiledelete);
-        btn_bcs = findViewById(R.id.btn_bcs);
+
+
         btn_feed = findViewById(R.id.btn_feed);
-        btn_bcsreport = findViewById(R.id.btn_bcsreport);
-        btn_foodreport = findViewById(R.id.btn_foodreport);
+        et_weight2 = findViewById(R.id.et_weight2);
+        et_kcal = findViewById(R.id.et_kcal);
+        et_auto = findViewById(R.id.et_auto);
+        et_manual = findViewById(R.id.et_manual);
+        rd_ask = findViewById(R.id.rd_ask);
+        rd_feed = findViewById(R.id.rd_feed);
+        ask_1 = findViewById(R.id.ask_1);
+        ask_2 = findViewById(R.id.ask_2);
+        ask_16 = findViewById(R.id.ask_16);
+        ask_18 = findViewById(R.id.ask_18);
+
+        pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        editor = pref.edit();
+
+        myStr = pref.getString("MyStr", "");
+        myStr2 = pref.getString("MyStr2", "");
+
+        et_weight2.setText(myStr);
+        et_kcal.setText(myStr2);
+
+
 
 
         Intent intent = getIntent();
@@ -100,51 +118,6 @@ public class PetProfileFix extends AppCompatActivity {
             }
         };
 
-        btn_petprofilefix.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PetProfileFix.this, PetProfileUpdate.class);
-                intent.putExtra("position", position);
-                startActivity(intent);
-            }
-        });
-
-        btn_petprofiledelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDatabase.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(PetProfileFix.this, "삭제 성공", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println("error: "+e.getMessage());
-                        Toast.makeText(PetProfileFix.this, "삭제 실패", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-
-        btn_bcs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PetProfileFix.this, bcsActivity.class);
-                intent.putExtra("position", position);
-                startActivity(intent);
-            }
-        });
-
-        btn_feed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PetProfileFix.this, PetProfileFeed.class);
-                intent.putExtra("position", position);
-                startActivity(intent);
-            }
-        });
 
         recyclerView.setLayoutManager(layoutManager);
         final PetdataAdapter petdataAdapter = new PetdataAdapter(petAccountList, uidList);
@@ -200,6 +173,39 @@ public class PetProfileFix extends AppCompatActivity {
         });
 */
 
+        listener();
+
+        rd_ask.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if (i == R.id.ask_1) {
+                    Toast.makeText(PetProfileFeed.this, "다이어트 필요", Toast.LENGTH_SHORT).show();
+                    flt_result = 1;
+                } else if (i == R.id.ask_16) {
+                    Toast.makeText(PetProfileFeed.this, "중성화 O", Toast.LENGTH_SHORT).show();
+                    flt_result = 1.6;
+                } else if (i == R.id.ask_18) {
+                    Toast.makeText(PetProfileFeed.this, "중성화 X", Toast.LENGTH_SHORT).show();
+                    flt_result = 1.8;
+                } else if (i == R.id.ask_2) {
+                    Toast.makeText(PetProfileFeed.this, "임신중", Toast.LENGTH_SHORT).show();
+                    flt_result = 2;
+                }
+            }
+        });
+
+        rd_feed.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if (i == R.id.et_manual) {
+                    Toast.makeText(PetProfileFeed.this, "수동 설정되었습니다.", Toast.LENGTH_SHORT).show();
+                    str_feed = "Maunal";
+                }  else if (i == R.id.et_auto) {
+                    Toast.makeText(PetProfileFeed.this, "자동 설정되었습니다.", Toast.LENGTH_SHORT).show();
+                    str_feed = "Auto";
+                }
+            }
+        });
 
 
 
@@ -212,12 +218,27 @@ public class PetProfileFix extends AppCompatActivity {
 
 
 
+    private void listener(){
+        btn_feed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                writeNewUser(Double.parseDouble(et_weight2.getText().toString()) ,Double.parseDouble(et_kcal.getText().toString()) ,flt_result, str_feed);
+                myStr = et_weight2.getText().toString();
+                myStr2 = et_kcal.getText().toString();
+                editor.putString("MyStr", myStr);
+                editor.putString("MyStr2", myStr2);
+                editor.apply();
+
+            }
+        });
+    }
+
 
     private void writeNewUser(double DWeight, double Kcal, double Num, String Status) {
        feed_data feed_data = new feed_data(DWeight, Kcal, Num, Status);
 
        mReference.child("feed_data").setValue(feed_data);
-       Toast.makeText(PetProfileFix.this, "사료 지급시작", Toast.LENGTH_SHORT).show();
+       Toast.makeText(PetProfileFeed.this, "사료 지급시작", Toast.LENGTH_SHORT).show();
     }
 
 }

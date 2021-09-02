@@ -15,10 +15,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.example.pethealth.databinding.ActivityBcsBinding
+import com.example.pethealth.fragments.PetAccount
 import com.example.pethealth.ml.MobilenetV110224Quant
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -30,6 +30,9 @@ import com.karumi.dexter.listener.single.PermissionListener
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class bcsActivity : AppCompatActivity() {
 
@@ -42,14 +45,14 @@ class bcsActivity : AppCompatActivity() {
     lateinit var bitmap: Bitmap
     lateinit var img_view: ImageView
     lateinit var btnGallery: Button
-
+    lateinit var petname: EditText
+    var uidList = ArrayList<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBcsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
 
 
@@ -78,6 +81,8 @@ class bcsActivity : AppCompatActivity() {
             val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.UINT8)
             inputFeature0.loadBuffer(byteBuffer)
 
+
+
 // Runs model inference and gets result.
             val outputs = model.process(inputFeature0)
             val outputFeature0 = outputs.outputFeature0AsTensorBuffer
@@ -95,15 +100,29 @@ class bcsActivity : AppCompatActivity() {
                 val pet = database.getReference(the_uid)
                 val the_pid = pet!!.key
 
-                val myRef : DatabaseReference = database.getReference("PetAccount" + the_pid).child("Petbcs")
+                val intent = intent
+                val position = intent.getIntExtra("position", 0)
+                val now = System.currentTimeMillis()
+                val date = Date(now)
+                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                val getTime = sdf.format(date)
+
+                val myRef : DatabaseReference = database.getReference(the_pid + "/PetAccount/" + uidList.get(position)).child("bcs")
+                val myRef2 : DatabaseReference = database.getReference(the_uid + "/PetAccount/" + uidList.get(position) + "/BcsReport").child(getTime)
+
+                //image 라는 테이블에 json 형태로 담긴다.
+                //database.getReference().child("Profile").setValue(imageDTO);
+                //  .push()  :  데이터가 쌓인다.
 
 
                 myRef.setValue(result)
+                myRef2.setValue(getTime + " " + result)
                 if(result != null) {
                     Toast.makeText(this, "결과가 저장되었습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "측정결과가 없습니다.", Toast.LENGTH_SHORT).show()
                 }
+
             }
             model.close()
         })
@@ -113,9 +132,27 @@ class bcsActivity : AppCompatActivity() {
         }
 
         //BCS 결과값 Firebase 저장
+        val user = FirebaseAuth.getInstance().currentUser
+        val the_uid = user!!.uid
+        val database : FirebaseDatabase = FirebaseDatabase.getInstance()
+        database.getReference().child(the_uid).child("PetAccount")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+                    //데이터가 쌓이기 때문에  clear()
+                    uidList.clear()
+                    for (ds in dataSnapshot.children)  //여러 값을 불러와 하나씩
+                    {
+                        val petAccount = ds.getValue(PetAccount::class.java)
+                        val uidKey = ds.key
+                        if (uidKey != null) {
+                            uidList.add(uidKey)
+                        }
+                    }
+                    // petdataAdapter.notifyDataSetChanged();
+                }
 
-
-
+                override fun onCancelled(error: DatabaseError) {}
+            })
 
         //when you click on the image
         binding.imageView.setOnClickListener {
@@ -279,6 +316,8 @@ class bcsActivity : AppCompatActivity() {
                 dialog.dismiss()
             }.show()
     }
+
+
 
 
 }
