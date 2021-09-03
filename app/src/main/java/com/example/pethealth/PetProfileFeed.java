@@ -235,9 +235,10 @@ public class PetProfileFeed extends AppCompatActivity {
 
 
     private void writeNewUser(double DWeight, double Kcal, double Num, String Status) {
-       feed_data feed_data = new feed_data(DWeight, Kcal, Num, Status);
+       feed_data feed_data = new feed_data(DWeight, Kcal, Num, null);
 
        mReference.child("feed_data").setValue(feed_data);
+       mReference.child("feed_data").child("status").setValue(Status);
        Toast.makeText(PetProfileFeed.this, "사료 지급시작", Toast.LENGTH_SHORT).show();
     }
 

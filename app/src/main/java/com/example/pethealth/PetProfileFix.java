@@ -146,6 +146,15 @@ public class PetProfileFix extends AppCompatActivity {
             }
         });
 
+        btn_bcsreport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PetProfileFix.this, BcsreportActivity.class);
+                intent.putExtra("position", position);
+                startActivity(intent);
+            }
+        });
+
         recyclerView.setLayoutManager(layoutManager);
         final PetdataAdapter petdataAdapter = new PetdataAdapter(petAccountList, uidList);
         recyclerView.setAdapter(petdataAdapter);//데이터 넣기기

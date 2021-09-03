@@ -1,118 +1,148 @@
 package com.example.pethealth;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageButton;
-
 import com.example.pethealth.fragments.PetAccount;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class BcsreportActivity extends AppCompatActivity {
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<PP1> arrayList;
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
+
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mReference;
+
+    private RecyclerView recyclerView;
+    private List<bcsItem> bcsItems = new ArrayList<>();
     private List<String> uidList = new ArrayList<>();
+
+    private TextView list_bcs;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bcsreport);
 
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView); // 아이디 연결
-        recyclerView.setHasFixedSize(true); // 리사이클러뷰 기존성능 강화
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        arrayList = new ArrayList<>(); // PP1 객체를 담을 어레이 리스트
+        mDatabase = FirebaseDatabase.getInstance();
+        mReference = mDatabase.getReference();
+        recyclerView = findViewById(R.id.recyclerview3);
+        list_bcs = findViewById(R.id.list_bcs);
 
-
-        database = FirebaseDatabase.getInstance(); // 파이어베이스 데이터베이스 연동
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String the_uid = user.getUid();
 
         Intent intent = getIntent();
         int position = intent.getIntExtra("position", 0);
 
-
-
-        databaseReference = database.getReference(the_uid+"/PetAccount").child(uidList.get(position)).child("BcsReport"); // DB테이블 연결
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                // 파이어베이스 데이터베이스의 데이터를 받아오는 곳
-                arrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
-                uidList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){ // 반복문으로 데이터 List를 추출해냄
-                    PP1 pp1 = snapshot.getValue(PP1.class); // 만들어뒀던 PP1 객체에 데이터를 담는다
-                    arrayList.add(pp1); // 담은 데이터를 배열리스트에 넣고 리사이클러뷰로 보낼 준비비
-                    String uidKey = snapshot.getKey();
-
-                    uidList.add(uidKey);
-                }
-                adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
-            }
-
-            @Override
-            public void onCancelled(@NotNull DatabaseError databaseError) {
-                Log.e("BcsreportActivity", String.valueOf(databaseError.toException())); //에러문 출력
-            }
-
-        });
-
-
-        adapter = new PetAdapter(arrayList, this);
-        recyclerView.setAdapter(adapter); //리사이클럽에 어댑터 연결
-
-
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        database = FirebaseDatabase.getInstance(); // 파이어베이스 데이터베이스 연동
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String the_uid = user.getUid();
 
-        databaseReference = database.getReference(the_uid + "/PetAccount"); // DB테이블 연결
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this){
             @Override
-            public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
-                // 파이어베이스 데이터베이스의 데이터를 받아오는 곳
-                arrayList.clear(); // 기존 배열리스트가 존재하지 않게 초기화
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){ // 반복문으로 데이터 List를 추출해냄
-                    PP1 pp1 = snapshot.getValue(PP1.class); // 만들어뒀던 PP1 객체에 데이터를 담는다
-                    arrayList.add(pp1); // 담은 데이터를 배열리스트에 넣고 리사이클러뷰로 보낼 준비비
+            public boolean canScrollVertically() {
+                return false;//세로스크롤 차단
+            }
+        };
+
+
+
+        recyclerView.setLayoutManager(layoutManager);
+        final bcsAdapter BcsAdapter = new bcsAdapter(bcsItems, uidList);
+        recyclerView.setAdapter(BcsAdapter);//데이터 넣기기
+
+
+
+
+
+        mDatabase.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("BcsReport").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+                //데이터가 쌓이기 때문에  clear()
+                bcsItems.clear();
+                uidList.clear();
+                for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
+                {
+                    bcsItem bcsItem = ds.getValue(bcsItem.class);
+                    String uidKey = ds.getKey();
+
+                    bcsItems.add(bcsItem);
+                    uidList.add(uidKey);
                 }
-                adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
+                BcsAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(@NotNull DatabaseError databaseError) {
-                Log.e("BcsreportActivity", String.valueOf(databaseError.toException())); //에러문 출력
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+/*
+        mReference = mDatabase.getReference("PetAccount" + the_uid); // 변경값을 확인할 child 이름
+        mReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                adapter.clear();
+
+                for (DataSnapshot messageData : dataSnapshot.getChildren()) {
+                    String msg2 = messageData.getValue().toString();
+                    Array.add(msg2);
+                    adapter.add(msg2);
+                    // child 내에 있는 데이터만큼 반복합니다.
+
+                }
+                adapter.notifyDataSetChanged();
             }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
+*/
+
+
+
+
+
+
+
 
     }
+
+
+
 }
+
+
+
+
