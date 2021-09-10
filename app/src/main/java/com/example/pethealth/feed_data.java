@@ -5,12 +5,14 @@ public class feed_data {
     double Kcal;
     double Num;
     String Status;
+    String Intake;
 
-    public feed_data(double DWeight, double kcal, double num, String status) {
+    public feed_data(double DWeight, double kcal, double num, String status, String intake) {
         this.DWeight = DWeight;
         Kcal = kcal;
         Num = num;
         Status = status;
+        Intake = intake;
     }
 
     public double getDWeight() {
@@ -43,5 +45,13 @@ public class feed_data {
 
     public void setStatus(String status) {
         Status = status;
+    }
+
+    public String getIntake() {
+        return Intake;
+    }
+
+    public void setIntake(String intake) {
+        Intake = intake;
     }
 }

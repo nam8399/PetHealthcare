@@ -5,10 +5,13 @@ import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -120,6 +123,8 @@ public class PetProfileFeed extends AppCompatActivity {
         mCalender = new GregorianCalendar();
 
         Log.v("HelloAlarmActivity", mCalender.getTime().toString());
+
+
 
         Intent intent = getIntent();
         int position = intent.getIntExtra("position", 0);
@@ -235,36 +240,69 @@ public class PetProfileFeed extends AppCompatActivity {
         Intent receiverIntent = new Intent(PetProfileFeed.this, AlarmRecevier.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(PetProfileFeed.this, 0, receiverIntent, 0);
 
-        String from = "16:51:00"; //임의로 날짜와 시간을 지정
+        //String from = "16:51:00"; //임의로 날짜와 시간을 지정
 
         //날짜 포맷을 바꿔주는 소스코드
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        Date datetime = null;
-        try {
-            datetime = dateFormat.parse(from);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+       // Date datetime = null;
+
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 16);
-        calendar.set(Calendar.MINUTE, 57);
+        calendar.set(Calendar.HOUR_OF_DAY, 00);
+        calendar.set(Calendar.MINUTE, 52);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
+        Boolean dailyNotify = true; // 무조건 알람을 사용
+
+        PackageManager pm = this.getPackageManager();
+        ComponentName receiver = new ComponentName(this, PetProfileFeed.class);
+
+        if (calendar.before(Calendar.getInstance())) {
+            calendar.add(Calendar.DATE, 1);
+        }
 
         // calendar.setTime(datetime);
 
-        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),pendingIntent);
+        //alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),pendingIntent);
 
+        if (dailyNotify) {
+
+
+            if (alarmManager != null) {
+
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                        AlarmManager.INTERVAL_DAY, pendingIntent);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                }
+            }
+
+            // 부팅 후 실행되는 리시버 사용가능하게 설정
+            pm.setComponentEnabledSetting(receiver,
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP);
+
+        }
+//        else { //Disable Daily Notifications
+//            if (PendingIntent.getBroadcast(this, 0, alarmIntent, 0) != null && alarmManager != null) {
+//                alarmManager.cancel(pendingIntent);
+//                //Toast.makeText(this,"Notifications were disabled",Toast.LENGTH_SHORT).show();
+//            }
+//            pm.setComponentEnabledSetting(receiver,
+//                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+//                    PackageManager.DONT_KILL_APP);
+//        }
     }
+
 
 
     private void listener(){
         btn_feed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                writeNewUser(Double.parseDouble(et_weight2.getText().toString()) ,Double.parseDouble(et_kcal.getText().toString()) ,flt_result, str_feed);
+                writeNewUser(Double.parseDouble(et_weight2.getText().toString()) ,Double.parseDouble(et_kcal.getText().toString()) ,flt_result, str_feed, null);
                 myStr = et_weight2.getText().toString();
                 myStr2 = et_kcal.getText().toString();
                 editor.putString("MyStr", myStr);
@@ -284,8 +322,8 @@ public class PetProfileFeed extends AppCompatActivity {
 
 
 
-    private void writeNewUser(double DWeight, double Kcal, double Num, String Status) {
-       feed_data feed_data = new feed_data(DWeight, Kcal, Num, null);
+    private void writeNewUser(double DWeight, double Kcal, double Num, String Status, String Intake) {
+       feed_data feed_data = new feed_data(DWeight, Kcal, Num, null, null);
 
        mReference.child("feed_data").setValue(feed_data);
        mReference.child("feed_data").child("status").setValue(Status);
