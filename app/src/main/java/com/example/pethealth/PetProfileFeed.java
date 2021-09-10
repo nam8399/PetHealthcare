@@ -235,7 +235,7 @@ public class PetProfileFeed extends AppCompatActivity {
         Intent receiverIntent = new Intent(PetProfileFeed.this, AlarmRecevier.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(PetProfileFeed.this, 0, receiverIntent, 0);
 
-        String from = "16:26:00"; //임의로 날짜와 시간을 지정
+        String from = "16:51:00"; //임의로 날짜와 시간을 지정
 
         //날짜 포맷을 바꿔주는 소스코드
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -248,7 +248,7 @@ public class PetProfileFeed extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 16);
-        calendar.set(Calendar.MINUTE, 29);
+        calendar.set(Calendar.MINUTE, 57);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
@@ -256,7 +256,6 @@ public class PetProfileFeed extends AppCompatActivity {
         // calendar.setTime(datetime);
 
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),pendingIntent);
-
 
     }
 

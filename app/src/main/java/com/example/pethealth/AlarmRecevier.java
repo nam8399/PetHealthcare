@@ -12,7 +12,14 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+
 public class AlarmRecevier extends BroadcastReceiver {
+
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mReference;
 
     public AlarmRecevier(){ }
 
@@ -26,6 +33,8 @@ public class AlarmRecevier extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        mDatabase = FirebaseDatabase.getInstance();
+        mReference = mDatabase.getReference();
         AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
         builder = null;
@@ -38,6 +47,8 @@ public class AlarmRecevier extends BroadcastReceiver {
         } else {
             builder = new NotificationCompat.Builder(context);
         }
+
+        mReference.child("feed_data").child("status").setValue("intake");
 
         //알림창 클릭 시 activity 화면 부름
         Intent intent2 = new Intent(context, MainActivity.class);
