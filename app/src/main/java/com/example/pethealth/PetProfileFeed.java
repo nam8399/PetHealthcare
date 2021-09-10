@@ -1,11 +1,17 @@
 package com.example.pethealth;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +39,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class PetProfileFeed extends AppCompatActivity {
@@ -59,9 +71,13 @@ public class PetProfileFeed extends AppCompatActivity {
     SharedPreferences pref;          // 프리퍼런스
     SharedPreferences.Editor editor; // 에디터
     String myStr, myStr2;                   // 문자 변수
+    private PendingIntent pendingIntent;
 
+    private AlarmManager alarmManager;
+    private GregorianCalendar mCalender;
 
-
+    private NotificationManager notificationManager;
+    NotificationCompat.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +113,13 @@ public class PetProfileFeed extends AppCompatActivity {
         et_kcal.setText(myStr2);
 
 
+        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
+        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
+        mCalender = new GregorianCalendar();
+
+        Log.v("HelloAlarmActivity", mCalender.getTime().toString());
 
         Intent intent = getIntent();
         int position = intent.getIntExtra("position", 0);
@@ -111,7 +133,7 @@ public class PetProfileFeed extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String the_uid = user.getUid();
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this){
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
                 return false;//세로스크롤 차단
@@ -124,16 +146,13 @@ public class PetProfileFeed extends AppCompatActivity {
         recyclerView.setAdapter(petdataAdapter);//데이터 넣기기
 
 
-
-
-
         mDatabase.getReference().child(the_uid).child("PetAccount").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
                 //데이터가 쌓이기 때문에  clear()
                 petAccountList.clear();
                 uidList.clear();
-                for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
+                for (DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
                 {
                     PetAccount petAccount = ds.getValue(PetAccount.class);
                     String uidKey = ds.getKey();
@@ -200,7 +219,7 @@ public class PetProfileFeed extends AppCompatActivity {
                 if (i == R.id.et_manual) {
                     Toast.makeText(PetProfileFeed.this, "수동 설정되었습니다.", Toast.LENGTH_SHORT).show();
                     str_feed = "Maunal";
-                }  else if (i == R.id.et_auto) {
+                } else if (i == R.id.et_auto) {
                     Toast.makeText(PetProfileFeed.this, "자동 설정되었습니다.", Toast.LENGTH_SHORT).show();
                     str_feed = "Auto";
                 }
@@ -208,14 +227,38 @@ public class PetProfileFeed extends AppCompatActivity {
         });
 
 
-
-
-
-
-
     }
 
 
+    private void setAlarm() {
+        //AlarmReceiver에 값 전달
+        Intent receiverIntent = new Intent(PetProfileFeed.this, AlarmRecevier.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(PetProfileFeed.this, 0, receiverIntent, 0);
+
+        String from = "16:26:00"; //임의로 날짜와 시간을 지정
+
+        //날짜 포맷을 바꿔주는 소스코드
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        Date datetime = null;
+        try {
+            datetime = dateFormat.parse(from);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 16);
+        calendar.set(Calendar.MINUTE, 29);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+
+        // calendar.setTime(datetime);
+
+        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),pendingIntent);
+
+
+    }
 
 
     private void listener(){
@@ -228,10 +271,18 @@ public class PetProfileFeed extends AppCompatActivity {
                 editor.putString("MyStr", myStr);
                 editor.putString("MyStr2", myStr2);
                 editor.apply();
-
+                Intent alarmIntent = new Intent(PetProfileFeed.this, AlarmRecevier.class);
+                pendingIntent = PendingIntent.getBroadcast(PetProfileFeed.this, 0, alarmIntent, 0);
+                setAlarm();
             }
+
+
         });
     }
+
+
+
+
 
 
     private void writeNewUser(double DWeight, double Kcal, double Num, String Status) {
