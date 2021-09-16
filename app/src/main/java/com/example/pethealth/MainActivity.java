@@ -1,6 +1,7 @@
 package com.example.pethealth;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
     AnimatedBottomBar animatedBottomBar;
     FragmentManager fragmentManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Example 1");
+
 
 
 

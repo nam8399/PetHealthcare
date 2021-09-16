@@ -29,6 +29,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.pethealth.fragments.PetAccount;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,6 +53,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class PetProfileFeed extends AppCompatActivity {
 
@@ -81,6 +86,7 @@ public class PetProfileFeed extends AppCompatActivity {
 
     private NotificationManager notificationManager;
     NotificationCompat.Builder builder;
+    private Intent intent2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,8 +254,8 @@ public class PetProfileFeed extends AppCompatActivity {
 
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 00);
-        calendar.set(Calendar.MINUTE, 52);
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        calendar.set(Calendar.MINUTE, 11);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
@@ -310,7 +316,20 @@ public class PetProfileFeed extends AppCompatActivity {
                 editor.apply();
                 Intent alarmIntent = new Intent(PetProfileFeed.this, AlarmRecevier.class);
                 pendingIntent = PendingIntent.getBroadcast(PetProfileFeed.this, 0, alarmIntent, 0);
-                setAlarm();
+               // setAlarm();
+
+                Constraints constraints = new Constraints.Builder()
+                        .setRequiresBatteryNotLow(true)
+                        .build();
+
+                PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES)
+                        .setConstraints(constraints)
+                        .build();
+
+                WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+                workManager.enqueueUniquePeriodicWork("Counter", ExistingPeriodicWorkPolicy.KEEP,periodicWorkRequest);
+                Toast.makeText(PetProfileFeed.this, "🎉 Scheduled job!", Toast.LENGTH_LONG).show();
+
             }
 
 

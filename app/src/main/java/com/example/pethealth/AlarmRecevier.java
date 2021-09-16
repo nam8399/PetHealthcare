@@ -48,9 +48,10 @@ public class AlarmRecevier extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        android.util.Log.i("알림 받음","onStartCommand()");
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference();
-        AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+       // AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
         builder = null;
         manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);

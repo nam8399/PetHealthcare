@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".BcsreportActivity"></activity>
+
+        <activity android:name=".BcsreportActivity" />
         <activity android:name=".PetProfileUpdate" />
         <activity android:name=".UploadedImageActivity" />
         <activity android:name=".UploadActivity" />
@@ -41,16 +42,20 @@
         <activity android:name=".PetProfileFix2" />
         <activity android:name=".PetProfileFeed" />
 
-        <receiver android:name=".AlarmRecevier"
+        <service android:name=".FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".AlarmRecevier"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-
-
     </application>
 
 </manifest>
