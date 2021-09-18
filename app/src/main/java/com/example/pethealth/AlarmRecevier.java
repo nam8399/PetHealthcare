@@ -52,7 +52,7 @@ public class AlarmRecevier extends BroadcastReceiver {
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference();
        // AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-
+/*
         builder = null;
         manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -63,7 +63,7 @@ public class AlarmRecevier extends BroadcastReceiver {
         } else {
             builder = new NotificationCompat.Builder(context);
         }
-
+*/
         mReference.child("feed_data").child("status").setValue("intake");
 /*
         mReference.child("feed_data").addValueEventListener(new ValueEventListener() {
@@ -88,6 +88,7 @@ public class AlarmRecevier extends BroadcastReceiver {
             }
         });*/
         //알림창 클릭 시 activity 화면 부름
+        /*
         Intent intent2 = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent2, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -109,6 +110,6 @@ public class AlarmRecevier extends BroadcastReceiver {
         wakeLock.acquire(5000);
 
         manager.notify(1,notification);
-
+*/
     }
 }

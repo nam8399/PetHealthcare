@@ -54,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.home:
                         fragment = new HomeFragment();
                         break;
-                    case R.id.book:
+                    case R.id.account:
                         fragment = new ProfileMainFragment();
                         break;
-                    case R.id.account:
+                    case R.id.book:
                         fragment = new AccountFragment();
                         break;
                 }
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 moveTaskToBack(true);						// 태스크를 백그라운드로 이동
-                finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
+                //finishAndRemoveTask();						// 액티비티 종료 + 태스크 리스트에서 지우기
                 android.os.Process.killProcess(android.os.Process.myPid());; // 현재 액티비티를 종료한다. (MainActivity에서 작동하기 때문에 애플리케이션을 종료한다.)
             }
         });

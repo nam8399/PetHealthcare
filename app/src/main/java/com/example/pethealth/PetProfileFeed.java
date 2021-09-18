@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -71,7 +73,7 @@ public class PetProfileFeed extends AppCompatActivity {
     private EditText et_weight2, et_kcal;
     private RadioGroup rd_ask, rd_feed;
     private RadioButton et_auto, et_manual, ask_1, ask_16, ask_18, ask_2;
-    private Button btn_feed, btn_petprofilefix, btn_petprofiledelete;
+    private Button btn_feed, btn_feed2;
     private double flt_result;
     private String str_feed;
      List<Object> Array = new ArrayList<Object>();
@@ -96,11 +98,10 @@ public class PetProfileFeed extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference();
         recyclerView = findViewById(R.id.recyclerview2);
-        btn_petprofilefix = findViewById(R.id.btn_petprofilefix);
-        btn_petprofiledelete = findViewById(R.id.btn_petprofiledelete);
 
 
         btn_feed = findViewById(R.id.btn_feed);
+        btn_feed2 = findViewById(R.id.btn_feed2);
         et_weight2 = findViewById(R.id.et_weight2);
         et_kcal = findViewById(R.id.et_kcal);
         et_auto = findViewById(R.id.et_auto);
@@ -237,8 +238,40 @@ public class PetProfileFeed extends AppCompatActivity {
             }
         });
 
+        btn_feed2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Constraints constraints = new Constraints.Builder()
+                        .build();
+
+                PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES)
+                        .setInitialDelay(10, TimeUnit.SECONDS)
+                        .build();
+                WorkManager workManager = WorkManager.getInstance(getApplicationContext());
+                workManager.cancelAllWork();
+                workManager.enqueueUniquePeriodicWork("Feed2", ExistingPeriodicWorkPolicy.KEEP,periodicWorkRequest);
+                Toast.makeText(PetProfileFeed.this, "🎉 Scheduled job!", Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+        new CountDownTimer(10000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                btn_feed2.setEnabled(false);
+                btn_feed2.setText("하루에 한번 사료을 다 먹었을 때 눌러주세요 (남은시간 : " + millisUntilFinished / 1000 + ")");
+            }
+            public void onFinish() {
+                btn_feed2.setEnabled(true);
+                btn_feed2.setText("오늘 사료량 측정");
+            }
+        }.start();
+
 
     }
+
+
+
 
 
     private void setAlarm() {
@@ -254,8 +287,8 @@ public class PetProfileFeed extends AppCompatActivity {
 
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 17);
-        calendar.set(Calendar.MINUTE, 11);
+        calendar.set(Calendar.HOUR_OF_DAY, 20);
+        calendar.set(Calendar.MINUTE, 18);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
@@ -316,8 +349,8 @@ public class PetProfileFeed extends AppCompatActivity {
                 editor.apply();
                 Intent alarmIntent = new Intent(PetProfileFeed.this, AlarmRecevier.class);
                 pendingIntent = PendingIntent.getBroadcast(PetProfileFeed.this, 0, alarmIntent, 0);
-               // setAlarm();
-
+                setAlarm();
+/*
                 Constraints constraints = new Constraints.Builder()
                         .setRequiresBatteryNotLow(true)
                         .build();
@@ -329,7 +362,7 @@ public class PetProfileFeed extends AppCompatActivity {
                 WorkManager workManager = WorkManager.getInstance(getApplicationContext());
                 workManager.enqueueUniquePeriodicWork("Counter", ExistingPeriodicWorkPolicy.KEEP,periodicWorkRequest);
                 Toast.makeText(PetProfileFeed.this, "🎉 Scheduled job!", Toast.LENGTH_LONG).show();
-
+*/
             }
 
 
