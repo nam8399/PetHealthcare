@@ -30,11 +30,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Constraints;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.ExistingWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
 import com.example.pethealth.fragments.PetAccount;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -73,7 +68,7 @@ public class PetProfileFeed extends AppCompatActivity {
     private EditText et_weight2, et_kcal;
     private RadioGroup rd_ask, rd_feed;
     private RadioButton et_auto, et_manual, ask_1, ask_16, ask_18, ask_2;
-    private Button btn_feed, btn_feed2;
+    private Button btn_feed;
     private double flt_result;
     private String str_feed;
      List<Object> Array = new ArrayList<Object>();
@@ -101,7 +96,6 @@ public class PetProfileFeed extends AppCompatActivity {
 
 
         btn_feed = findViewById(R.id.btn_feed);
-        btn_feed2 = findViewById(R.id.btn_feed2);
         et_weight2 = findViewById(R.id.et_weight2);
         et_kcal = findViewById(R.id.et_kcal);
         et_auto = findViewById(R.id.et_auto);
@@ -238,34 +232,6 @@ public class PetProfileFeed extends AppCompatActivity {
             }
         });
 
-        btn_feed2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Constraints constraints = new Constraints.Builder()
-                        .build();
-
-                PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES)
-                        .setInitialDelay(10, TimeUnit.SECONDS)
-                        .build();
-                WorkManager workManager = WorkManager.getInstance(getApplicationContext());
-                workManager.cancelAllWork();
-                workManager.enqueueUniquePeriodicWork("Feed2", ExistingPeriodicWorkPolicy.KEEP,periodicWorkRequest);
-                Toast.makeText(PetProfileFeed.this, "🎉 Scheduled job!", Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-        new CountDownTimer(10000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                btn_feed2.setEnabled(false);
-                btn_feed2.setText("하루에 한번 사료을 다 먹었을 때 눌러주세요 (남은시간 : " + millisUntilFinished / 1000 + ")");
-            }
-            public void onFinish() {
-                btn_feed2.setEnabled(true);
-                btn_feed2.setText("오늘 사료량 측정");
-            }
-        }.start();
 
 
     }
@@ -287,8 +253,8 @@ public class PetProfileFeed extends AppCompatActivity {
 
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 20);
-        calendar.set(Calendar.MINUTE, 18);
+        calendar.set(Calendar.HOUR_OF_DAY, 22);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
