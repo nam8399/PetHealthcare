@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Example 1");
 
 
-
-
         animatedBottomBar = findViewById(R.id.animatedBottomBar);
 
         if (savedInstanceState == null) {
