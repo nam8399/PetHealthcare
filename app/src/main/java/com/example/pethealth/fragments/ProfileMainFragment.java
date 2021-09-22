@@ -71,8 +71,11 @@ public class ProfileMainFragment extends Fragment implements PetAdapter.ListItem
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String the_uid = user.getUid();
 
+        adapter = new PetAdapter(arrayList, getActivity(), this);
+        recyclerView.setAdapter(adapter); //리사이클럽에 어댑터 연결
+
         databaseReference = database.getReference(the_uid+"/PetAccount"); // DB테이블 연결
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NotNull DataSnapshot dataSnapshot) {
                 // 파이어베이스 데이터베이스의 데이터를 받아오는 곳
@@ -98,8 +101,7 @@ public class ProfileMainFragment extends Fragment implements PetAdapter.ListItem
             }
         });
 
-        adapter = new PetAdapter(arrayList, getActivity(), this);
-        recyclerView.setAdapter(adapter); //리사이클럽에 어댑터 연결
+
 
 
 

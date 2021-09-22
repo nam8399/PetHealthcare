@@ -39,6 +39,10 @@ public class AlarmRecevier extends BroadcastReceiver {
     private DatabaseReference mReference;
     private List<feed_data> feed_data = new ArrayList<>();
     private String intake = "";
+    private int i = 1;
+    private String intakename = "";
+    private String intakedate = "";
+    private String intakedata = "";
 
 
     public AlarmRecevier(){ }
@@ -76,7 +80,7 @@ public class AlarmRecevier extends BroadcastReceiver {
         delayHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mReference.child("feed_data").child("intake").addValueEventListener(new ValueEventListener() {
+                mReference.child("feed_data").child("status").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String value = dataSnapshot.getValue(String.class);
@@ -87,10 +91,48 @@ public class AlarmRecevier extends BroadcastReceiver {
                         String the_uid = user.getUid();
                         long now = System.currentTimeMillis();
                         Date date = new Date(now);
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         String getTime = dateFormat.format(date);
 
-                        mReference.child(the_uid).child("PetAccount").child("intakelist").child(getTime).setValue(intake);
+
+                        intakename = Integer.toString(i);
+                        mReference.child(the_uid).child("intakelist").child(intakename).child("intakedate").setValue(getTime);
+                        mReference.child(the_uid).child("intakelist").child(intakename).child("intakedata").setValue(intake);
+/*
+                        mReference.child(the_uid).child("PetAccount").child("intakelist").child(intakename).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                intakegroup group = dataSnapshot.getValue(intakegroup.class);
+
+                                intakedata = group.getIntakedata();
+                                intakedate = group.getIntakedate();
+
+                                android.util.Log.i("알림 받음",intakedata + intakedate);
+
+                                if (intakedate != getTime) {
+                                    android.util.Log.i("알림 받음","성공");
+                                    i++;
+                                    intakename = Integer.toString(i);
+                                    mReference.child(the_uid).child("intakelist").child(intakename).child("intakedate").setValue(getTime);
+                                    mReference.child(the_uid).child("intakelist").child(intakename).child("intakedata").setValue(intake);
+
+                                }
+                                else {
+                                    android.util.Log.i("알림 받음","실패");
+                                    intakename = Integer.toString(i);
+                                    mReference.child(the_uid).child("intakelist").child(intakename).child("intakedate").setValue(getTime);
+                                    mReference.child(the_uid).child("intakelist").child(intakename).child("intakedata").setValue(intake);
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                //Log.e("MainActivity", String.valueOf(databaseError.toException())); // 에러문 출력
+                            }
+                        });
+*/
 
                     }
 
