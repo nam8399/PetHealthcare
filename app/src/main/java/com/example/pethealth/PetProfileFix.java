@@ -146,6 +146,17 @@ public class PetProfileFix extends AppCompatActivity {
             }
         });
 
+        btn_foodreport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PetProfileFix.this, dailyfoodActivity.class);
+                intent.putExtra("position", position);
+                startActivity(intent);
+            }
+        });
+
+
+
         btn_bcsreport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

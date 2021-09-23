@@ -108,7 +108,7 @@ class bcsActivity : AppCompatActivity() {
                 val getTime = sdf.format(date)
 
                 val myRef : DatabaseReference = database.getReference(the_pid + "/PetAccount/" + uidList.get(position)).child("bcs")
-                val myRef2 : DatabaseReference = database.getReference(the_uid + "/PetAccount/" + uidList.get(position) + "/BcsReport").child(getTime)
+                val myRef2 : DatabaseReference = database.getReference(the_uid + "/PetAccount/" + uidList.get(position) + "/BcsReport")
 
                 //image 라는 테이블에 json 형태로 담긴다.
                 //database.getReference().child("Profile").setValue(imageDTO);
@@ -116,7 +116,7 @@ class bcsActivity : AppCompatActivity() {
 
 
                 myRef.setValue(result)
-                myRef2.setValue(getTime + " " + result)
+                myRef2.push().setValue(getTime + " " + result)
                 if(result != null) {
                     Toast.makeText(this, "결과가 저장되었습니다.", Toast.LENGTH_SHORT).show()
                 } else {
