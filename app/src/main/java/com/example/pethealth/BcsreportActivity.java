@@ -42,10 +42,9 @@ public class BcsreportActivity extends AppCompatActivity {
     private DatabaseReference mReference;
 
     private RecyclerView recyclerView;
-    private List<bcsItem> bcsItems = new ArrayList<>();
+    private List<bcsgroup> bcsItems = new ArrayList<>();
     private List<String> uidList = new ArrayList<>();
 
-    private TextView list_bcs;
 
 
 
@@ -58,7 +57,6 @@ public class BcsreportActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference();
         recyclerView = findViewById(R.id.recyclerview3);
-        list_bcs = findViewById(R.id.list_bcs);
 
 
         Intent intent = getIntent();
@@ -84,21 +82,44 @@ public class BcsreportActivity extends AppCompatActivity {
 
 
 
-        mDatabase.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("BcsReport").addValueEventListener(new ValueEventListener() {
+
+        mDatabase.getReference().child(the_uid).child("PetAccount").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
                 //데이터가 쌓이기 때문에  clear()
-                bcsItems.clear();
+                //bcsItems.clear();
                 uidList.clear();
                 for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
                 {
-                    bcsItem bcsItem = ds.getValue(bcsItem.class);
+                    bcsgroup bcsItem = ds.getValue(bcsgroup.class);
                     String uidKey = ds.getKey();
 
-                    bcsItems.add(bcsItem);
+                    //bcsItems.add(bcsItem);
                     uidList.add(uidKey);
                 }
-                BcsAdapter.notifyDataSetChanged();
+                mDatabase.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("BcsReport").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+                        //데이터가 쌓이기 때문에  clear()
+                        bcsItems.clear();
+                        //uidList.clear();
+                        for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
+                        {
+                            bcsgroup bcsItem = ds.getValue(bcsgroup.class);
+                            String uidKey = ds.getKey();
+
+                            bcsItems.add(bcsItem);
+                            //uidList.add(uidKey);
+                        }
+                        BcsAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                //BcsAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -106,6 +127,9 @@ public class BcsreportActivity extends AppCompatActivity {
 
             }
         });
+
+
+
 /*
         mReference = mDatabase.getReference("PetAccount" + the_uid); // 변경값을 확인할 child 이름
         mReference.addValueEventListener(new ValueEventListener() {

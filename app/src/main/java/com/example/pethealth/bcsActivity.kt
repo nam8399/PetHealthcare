@@ -104,11 +104,15 @@ class bcsActivity : AppCompatActivity() {
                 val position = intent.getIntExtra("position", 0)
                 val now = System.currentTimeMillis()
                 val date = Date(now)
-                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                val sdf = SimpleDateFormat("yyyy-MM-dd")
                 val getTime = sdf.format(date)
 
                 val myRef : DatabaseReference = database.getReference(the_pid + "/PetAccount/" + uidList.get(position)).child("bcs")
                 val myRef2 : DatabaseReference = database.getReference(the_uid + "/PetAccount/" + uidList.get(position) + "/BcsReport")
+
+                val group = bcsgroup()
+                group.bcs = result
+                group.date = getTime
 
                 //image 라는 테이블에 json 형태로 담긴다.
                 //database.getReference().child("Profile").setValue(imageDTO);
@@ -116,7 +120,7 @@ class bcsActivity : AppCompatActivity() {
 
 
                 myRef.setValue(result)
-                myRef2.push().setValue(getTime + " " + result)
+                myRef2.push().setValue(group)
                 if(result != null) {
                     Toast.makeText(this, "결과가 저장되었습니다.", Toast.LENGTH_SHORT).show()
                 } else {

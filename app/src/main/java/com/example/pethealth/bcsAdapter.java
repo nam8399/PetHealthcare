@@ -19,14 +19,14 @@ import java.util.List;
 
 public class bcsAdapter extends RecyclerView.Adapter<bcsAdapter.ViewHolder>
 {
-    private List<bcsItem> bcsItems = new ArrayList<>();
+    private List<bcsgroup> bcsItems = new ArrayList<>();
     private List<String> uidList = new ArrayList<>();
     private FirebaseStorage storage;
     private Context context;
 
 
 
-    public bcsAdapter(List<bcsItem> bcsItem, List<String> uidList){
+    public bcsAdapter(List<bcsgroup> bcsItem, List<String> uidList){
         this.bcsItems = bcsItem;
         this.uidList = uidList;
         storage = FirebaseStorage.getInstance();
@@ -47,7 +47,8 @@ public class bcsAdapter extends RecyclerView.Adapter<bcsAdapter.ViewHolder>
     {
         // holder.textViewUser.setText(imageDTOList.get(position).getUserid());
         //holder.textViewTitle.setText(imageDTOList.get(position).getTitle());
-        holder.list_bcs.setText(bcsItems.get(position).getBcsReport());
+        holder.bcs_date.setText(bcsItems.get(position).getDate());
+        holder.bcs_data.setText(bcsItems.get(position).getBcs());
         // holder.imageViewHeart.setImageResource(R.drawable.favorite_border_black_24dp);
 
         context = holder.itemView.getContext();
@@ -62,14 +63,16 @@ public class bcsAdapter extends RecyclerView.Adapter<bcsAdapter.ViewHolder>
     //ViewHolder 클래스
     class ViewHolder extends RecyclerView.ViewHolder
     {
-        public TextView list_bcs;
+        public TextView bcs_date;
+        public TextView bcs_data;
 
         public ViewHolder(@NonNull View itemView)
         {
             super(itemView);
             //textViewUser = itemView.findViewById(R.id.item_user);
             // textViewTitle = itemView.findViewById(R.id.item_title); //파라메타 id 찾기
-            list_bcs = itemView.findViewById(R.id.list_bcs);
+            bcs_data = itemView.findViewById(R.id.bcs_data);
+            bcs_date = itemView.findViewById(R.id.bcs_date);
             // imageViewHeart= itemView.findViewById(R.id.item_heart);
         }
     }
