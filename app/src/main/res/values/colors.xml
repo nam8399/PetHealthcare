@@ -16,4 +16,7 @@
     <color name="black">#FF000000</color>
     <color name="colorWhite">#FFFFFFFF</color>
     <color name="custom">#F69F1E</color>
+    <color name="e6f4fa">#6495ed</color>
+    <color name="skyblue">#96BDFF</color>
+    <color name="green">#66cdaa</color>
 </resources>

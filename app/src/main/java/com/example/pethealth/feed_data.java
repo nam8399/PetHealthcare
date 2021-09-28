@@ -6,6 +6,7 @@ public class feed_data {
     double Num;
     String Status;
     String Intake;
+    String Manualkcal;
 
     public feed_data(double DWeight, double kcal, double num, String status, String intake) {
         this.DWeight = DWeight;
@@ -54,4 +55,6 @@ public class feed_data {
     public void setIntake(String intake) {
         Intake = intake;
     }
+
+
 }

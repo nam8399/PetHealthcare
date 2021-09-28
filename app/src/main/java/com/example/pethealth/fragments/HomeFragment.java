@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment {
     TextView city, txttemp;
     ImageView weatherImage;
     String nameIcon = "10d";
-    ImageButton calenderview;
+    ImageView calenderview;
     ImageView ib1, ib2, ib3;
 
     CardView users;
@@ -240,8 +240,11 @@ public class HomeFragment extends Fragment {
 
         calenderview = view.findViewById(R.id.calendarView);
         ib1 = view.findViewById(R.id.ib1);
+        ib1.setClipToOutline(true);
         ib2 = view.findViewById(R.id.ib2);
+        ib2.setClipToOutline(true);
         ib3 = view.findViewById(R.id.ib3);
+        ib3.setClipToOutline(true);
 
         calenderview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -284,32 +287,4 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
-/*
-    private void setDataImage(final ImageView ImageView, final String value){
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                switch (value){
-                    case "01d": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w01d)); break;
-                    case "01n": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w01d)); break;
-                    case "02d": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w02d)); break;
-                    case "02n": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w02d)); break;
-                    case "03d": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w03d)); break;
-                    case "03n": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w03d)); break;
-                    case "04d": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w04d)); break;
-                    case "04n": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w04d)); break;
-                    case "09d": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w09d)); break;
-                    case "09n": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w09d)); break;
-                    case "10d": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w10d)); break;
-                    case "10n": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w10d)); break;
-                    case "11d": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w11d)); break;
-                    case "11n": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w11d)); break;
-                    case "13d": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w13d)); break;
-                    case "13n": ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w13d)); break;
-                    default:ImageView.setImageDrawable(getResources().getDrawable(R.drawable.w03d));
-
-                }
-            }
-        });
-    }*/
 }

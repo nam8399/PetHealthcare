@@ -235,7 +235,7 @@ public class PetProfileUpdate extends AppCompatActivity {
                         //파이어베이스에 데이터베이스 업로드
                         @SuppressWarnings("VisibleForTests")
                         Uri downloadUrl = task.getResult();
-
+/*
                         PetAccount petAccount = new PetAccount();
                         petAccount.setImage(downloadUrl.toString());
                         petAccount.setBirthday(et_birthday.getText().toString());
@@ -244,14 +244,19 @@ public class PetProfileUpdate extends AppCompatActivity {
                         petAccount.setSpecies(et_species.getSelectedItem().toString());
                         petAccount.setWeight(et_weight.getText().toString());
 //                      imageDTO.setUserid(mAuth.getCurrentUser().getEmail());
+*/
                         Intent intent = getIntent();
                         int position = intent.getIntExtra("position", 0);
 
                         //image 라는 테이블에 json 형태로 담긴다.
                         //database.getReference().child("Profile").setValue(imageDTO);
                         //  .push()  :  데이터가 쌓인다.
-                        database.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).setValue(petAccount);
-
+                        database.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("bithday").setValue(et_birthday.getText().toString());
+                        database.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("gender").setValue(str_result);
+                        database.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("image").setValue(downloadUrl.toString());
+                        database.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("name").setValue(et_name.getText().toString());
+                        database.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("species").setValue(et_species.getSelectedItem().toString());
+                        database.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("weight").setValue(et_weight.getText().toString());
                         /*Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                         startActivity(intent);*/
                         finish();

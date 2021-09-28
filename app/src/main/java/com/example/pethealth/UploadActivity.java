@@ -145,12 +145,18 @@ public class UploadActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == GALLEY_CODE)
         {
-            imageUrl = getRealPathFromUri(data.getData());
-            RequestOptions cropOptions = new RequestOptions();
-            Glide.with(getApplicationContext())
-                    .load(imageUrl)
-                    .apply(cropOptions.optionalCircleCrop())
-                    .into(ivProfile);
+            try {
+                imageUrl = getRealPathFromUri(data.getData());
+                RequestOptions cropOptions = new RequestOptions();
+                Glide.with(getApplicationContext())
+                        .load(imageUrl)
+                        .apply(cropOptions.optionalCircleCrop())
+                        .into(ivProfile);
+            } catch (NullPointerException e)
+            {
+                Toast.makeText(UploadActivity.this, "이미지 선택 안함", Toast.LENGTH_SHORT).show();
+            }
+
         }
 
         super.onActivityResult(requestCode, resultCode, data);

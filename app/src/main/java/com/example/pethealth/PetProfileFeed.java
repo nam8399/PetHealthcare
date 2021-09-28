@@ -65,7 +65,7 @@ public class PetProfileFeed extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     ProgressDialog progressDialog;
 
-    private EditText et_weight2, et_kcal;
+    private EditText et_weight2, et_kcal, manual_feed;
     private RadioGroup rd_ask, rd_feed;
     private RadioButton et_auto, et_manual, ask_1, ask_16, ask_18, ask_2;
     private Button btn_feed;
@@ -75,7 +75,10 @@ public class PetProfileFeed extends AppCompatActivity {
 
     SharedPreferences pref;          // 프리퍼런스
     SharedPreferences.Editor editor; // 에디터
-    String myStr, myStr2;                   // 문자 변수
+    String myStr;
+    String myStr2;
+    Long manualkcal;                   // 문자 변수
+    int mk;
     private PendingIntent pendingIntent;
 
     private AlarmManager alarmManager;
@@ -106,6 +109,7 @@ public class PetProfileFeed extends AppCompatActivity {
         ask_2 = findViewById(R.id.ask_2);
         ask_16 = findViewById(R.id.ask_16);
         ask_18 = findViewById(R.id.ask_18);
+        manual_feed = findViewById(R.id.manual_feed);
 
         pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
         editor = pref.edit();
@@ -224,7 +228,7 @@ public class PetProfileFeed extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.et_manual) {
                     Toast.makeText(PetProfileFeed.this, "수동 설정되었습니다.", Toast.LENGTH_SHORT).show();
-                    str_feed = "Maunal";
+                    str_feed = "Manual";
                 } else if (i == R.id.et_auto) {
                     Toast.makeText(PetProfileFeed.this, "자동 설정되었습니다.", Toast.LENGTH_SHORT).show();
                     str_feed = "Auto";
@@ -342,10 +346,20 @@ public class PetProfileFeed extends AppCompatActivity {
 
     private void writeNewUser(double DWeight, double Kcal, double Num, String Status, String Intake) {
        feed_data feed_data = new feed_data(DWeight, Kcal, Num, null, null);
+       try {
+           manualkcal = Long.parseLong(manual_feed.getText().toString());
+           mReference.child("feed_data").setValue(feed_data);
+           mReference.child("feed_data").child("manual kcal").setValue(manualkcal);
+           mReference.child("feed_data").child("status").setValue(Status);
+           Toast.makeText(PetProfileFeed.this, "사료 지급시작", Toast.LENGTH_SHORT).show();
+       } catch (NumberFormatException e) {
+           int manualkcal2 = 0;
+           mReference.child("feed_data").setValue(feed_data);
+           mReference.child("feed_data").child("manual kcal").setValue(manualkcal2);
+           mReference.child("feed_data").child("status").setValue(Status);
+           Toast.makeText(PetProfileFeed.this, "사료 지급시작", Toast.LENGTH_SHORT).show();
+       }
 
-       mReference.child("feed_data").setValue(feed_data);
-       mReference.child("feed_data").child("status").setValue(Status);
-       Toast.makeText(PetProfileFeed.this, "사료 지급시작", Toast.LENGTH_SHORT).show();
     }
 
 }
