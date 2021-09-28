@@ -81,6 +81,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.6'
-    implementation 'com.google.firebase:firebase-messaging:11.0.4'}
+    implementation 'com.google.firebase:firebase-messaging:11.0.4'
+    compile 'com.prolificinteractive:material-calendarview:1.4.3'}
 
 apply plugin: 'com.google.gms.google-services'

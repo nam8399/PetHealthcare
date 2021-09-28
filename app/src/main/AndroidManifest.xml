@@ -44,6 +44,7 @@
         <activity android:name=".PetProfileFix" />
         <activity android:name=".PetProfileFix2" />
         <activity android:name=".PetProfileFeed" />
+        <activity android:name=".Calender" />
 
         <service android:name=".FirebaseMessagingService">
             <intent-filter>

@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -17,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -74,6 +77,8 @@ public class HomeFragment extends Fragment {
     TextView city, txttemp;
     ImageView weatherImage;
     String nameIcon = "10d";
+    ImageButton calenderview;
+    ImageView ib1, ib2, ib3;
 
     CardView users;
     CardView addusers;
@@ -192,9 +197,9 @@ public class HomeFragment extends Fragment {
 
             String visibility = jsonObject.getString("visibility");
 
-           //nameIcon = jsonObject.getJSONArray("weather").getJSONObject(0).getString("icon");
+            //nameIcon = jsonObject.getJSONArray("weather").getJSONObject(0).getString("icon");
 
-           // Log.i("Name Icon",nameIcon);
+            // Log.i("Name Icon",nameIcon);
 
             Long time = jsonObject.getLong("dt");
 
@@ -233,15 +238,43 @@ public class HomeFragment extends Fragment {
         //users = view.findViewById(R.id.users);
         //addusers = view.findViewById(R.id.addusers);
 
-        line_bcs = view.findViewById(R.id.line_bcs);
+        calenderview = view.findViewById(R.id.calendarView);
+        ib1 = view.findViewById(R.id.ib1);
+        ib2 = view.findViewById(R.id.ib2);
+        ib3 = view.findViewById(R.id.ib3);
 
-        line_bcs.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getActivity(), bcsActivity.class);
+        calenderview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), Calender.class);
                 startActivity(intent);
             }
         });
+
+        ib1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent urlintent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://dogpre.com/?gclid=CjwKCAjwy7CKBhBMEiwA0Eb7an_YgKrD3_jTl-PAmTDKbjYy8gdumPy5Yu902gyoR-kRIF36z4s4zRoCWrAQAvD_BwE"));
+                startActivity(urlintent);
+            }
+        });
+
+        ib2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent urlintent2 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.pet-friends.co.kr/main/tab/2"));
+                startActivity(urlintent2);
+            }
+        });
+
+        ib3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent urlintent3 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://queenpuppy.co.kr/"));
+                startActivity(urlintent3);
+            }
+        });
+
 
         city = view.findViewById(R.id.id_city);
         txttemp = view.findViewById(R.id.id_degree);
