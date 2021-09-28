@@ -66,6 +66,7 @@ public class PetProfileFeed extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     private EditText et_weight2, et_kcal, manual_feed;
+    private TextView message;
     private RadioGroup rd_ask, rd_feed;
     private RadioButton et_auto, et_manual, ask_1, ask_16, ask_18, ask_2;
     private Button btn_feed;
@@ -109,6 +110,7 @@ public class PetProfileFeed extends AppCompatActivity {
         ask_2 = findViewById(R.id.ask_2);
         ask_16 = findViewById(R.id.ask_16);
         ask_18 = findViewById(R.id.ask_18);
+        message = findViewById(R.id.message);
         manual_feed = findViewById(R.id.manual_feed);
 
         pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
@@ -208,16 +210,16 @@ public class PetProfileFeed extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.ask_1) {
-                    Toast.makeText(PetProfileFeed.this, "다이어트 필요", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(PetProfileFeed.this, "다이어트 필요", Toast.LENGTH_SHORT).show();
                     flt_result = 1;
                 } else if (i == R.id.ask_16) {
-                    Toast.makeText(PetProfileFeed.this, "중성화 O", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(PetProfileFeed.this, "중성화 O", Toast.LENGTH_SHORT).show();
                     flt_result = 1.6;
                 } else if (i == R.id.ask_18) {
-                    Toast.makeText(PetProfileFeed.this, "중성화 X", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(PetProfileFeed.this, "중성화 X", Toast.LENGTH_SHORT).show();
                     flt_result = 1.8;
                 } else if (i == R.id.ask_2) {
-                    Toast.makeText(PetProfileFeed.this, "임신중", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(PetProfileFeed.this, "임신중", Toast.LENGTH_SHORT).show();
                     flt_result = 2;
                 }
             }
@@ -227,10 +229,10 @@ public class PetProfileFeed extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.et_manual) {
-                    Toast.makeText(PetProfileFeed.this, "수동 설정되었습니다.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(PetProfileFeed.this, "수동 설정되었습니다.", Toast.LENGTH_SHORT).show();
                     str_feed = "Manual";
                 } else if (i == R.id.et_auto) {
-                    Toast.makeText(PetProfileFeed.this, "자동 설정되었습니다.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(PetProfileFeed.this, "자동 설정되었습니다.", Toast.LENGTH_SHORT).show();
                     str_feed = "Auto";
                 }
             }
@@ -312,6 +314,21 @@ public class PetProfileFeed extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 writeNewUser(Double.parseDouble(et_weight2.getText().toString()) ,Double.parseDouble(et_kcal.getText().toString()) ,flt_result, str_feed, null);
+
+
+                mReference.child("feed_data").child("message").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String value = dataSnapshot.getValue(String.class);
+                        message.setText(value);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        //Log.e("MainActivity", String.valueOf(databaseError.toException())); // 에러문 출력
+                    }
+                });
                 myStr = et_weight2.getText().toString();
                 myStr2 = et_kcal.getText().toString();
                 editor.putString("MyStr", myStr);
@@ -351,13 +368,13 @@ public class PetProfileFeed extends AppCompatActivity {
            mReference.child("feed_data").setValue(feed_data);
            mReference.child("feed_data").child("manual kcal").setValue(manualkcal);
            mReference.child("feed_data").child("status").setValue(Status);
-           Toast.makeText(PetProfileFeed.this, "사료 지급시작", Toast.LENGTH_SHORT).show();
+           //Toast.makeText(PetProfileFeed.this, "사료 지급중", Toast.LENGTH_SHORT).show();
        } catch (NumberFormatException e) {
            int manualkcal2 = 0;
            mReference.child("feed_data").setValue(feed_data);
            mReference.child("feed_data").child("manual kcal").setValue(manualkcal2);
            mReference.child("feed_data").child("status").setValue(Status);
-           Toast.makeText(PetProfileFeed.this, "사료 지급시작", Toast.LENGTH_SHORT).show();
+           //Toast.makeText(PetProfileFeed.this, "사료 지급중", Toast.LENGTH_SHORT).show();
        }
 
     }

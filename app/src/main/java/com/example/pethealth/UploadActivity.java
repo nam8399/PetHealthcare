@@ -38,6 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class UploadActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -190,8 +191,6 @@ public class UploadActivity extends AppCompatActivity {
             Uri file = Uri.fromFile(new File(uri));
             final StorageReference riversRef = storageRef.child(the_uid+"/"+file.getLastPathSegment());
             UploadTask uploadTask = riversRef.putFile(file);
-
-
             Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -230,11 +229,14 @@ public class UploadActivity extends AppCompatActivity {
                         finish();
 
                     } else {
-                        // Handle failures
-                        // ...
+                        Toast.makeText(UploadActivity.this, "이미지 선택 안함", Toast.LENGTH_SHORT).show();
+                        progressDialog.cancel();
                     }
                 }
             });
+
+
+
 
         }catch (NullPointerException e)
         {
