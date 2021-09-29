@@ -71,64 +71,72 @@ class bcsActivity : AppCompatActivity() {
 
 
         make_prediction.setOnClickListener(View.OnClickListener {
-            var resized = Bitmap.createScaledBitmap(bitmap, 224, 224, true)
-            val model = MobilenetV110224Quant.newInstance(this)
 
-            var tbuffer = TensorImage.fromBitmap(resized)
-            var byteBuffer = tbuffer.buffer
+            try {
+                var resized = Bitmap.createScaledBitmap(bitmap, 224, 224, true)
+                val model = MobilenetV110224Quant.newInstance(this)
+
+                var tbuffer = TensorImage.fromBitmap(resized)
+                var byteBuffer = tbuffer.buffer
 
 // Creates inputs for reference.
-            val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.UINT8)
-            inputFeature0.loadBuffer(byteBuffer)
+                val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.UINT8)
+                inputFeature0.loadBuffer(byteBuffer)
 
 
 
 // Runs model inference and gets result.
-            val outputs = model.process(inputFeature0)
-            val outputFeature0 = outputs.outputFeature0AsTensorBuffer
+                val outputs = model.process(inputFeature0)
+                val outputFeature0 = outputs.outputFeature0AsTensorBuffer
 
-            var max = getMax(outputFeature0.floatArray)
+                var max = getMax(outputFeature0.floatArray)
 
-            text_view.setText(labels[max])
-            var result = labels[max]
+                text_view.setText(labels[max])
+                var result = labels[max]
 // Releases model resources if no longer used.
-            // BCS 결과값 Firebase에 저장
-            binding.btnResult.setOnClickListener {
-                val database : FirebaseDatabase = FirebaseDatabase.getInstance()
-                val user = FirebaseAuth.getInstance().currentUser
-                val the_uid = user!!.uid
-                val pet = database.getReference(the_uid)
-                val the_pid = pet!!.key
+                // BCS 결과값 Firebase에 저장
+                binding.btnResult.setOnClickListener {
+                    val database : FirebaseDatabase = FirebaseDatabase.getInstance()
+                    val user = FirebaseAuth.getInstance().currentUser
+                    val the_uid = user!!.uid
+                    val pet = database.getReference(the_uid)
+                    val the_pid = pet!!.key
 
-                val intent = intent
-                val position = intent.getIntExtra("position", 0)
-                val now = System.currentTimeMillis()
-                val date = Date(now)
-                val sdf = SimpleDateFormat("yyyy-MM-dd")
-                val getTime = sdf.format(date)
+                    val intent = intent
+                    val position = intent.getIntExtra("position", 0)
+                    val now = System.currentTimeMillis()
+                    val date = Date(now)
+                    val sdf = SimpleDateFormat("yyyy-MM-dd")
+                    val getTime = sdf.format(date)
 
-                val myRef : DatabaseReference = database.getReference(the_pid + "/PetAccount/" + uidList.get(position)).child("bcs")
-                val myRef2 : DatabaseReference = database.getReference(the_uid + "/PetAccount/" + uidList.get(position) + "/BcsReport")
+                    val myRef : DatabaseReference = database.getReference(the_pid + "/PetAccount/" + uidList.get(position)).child("bcs")
+                    val myRef2 : DatabaseReference = database.getReference(the_uid + "/PetAccount/" + uidList.get(position) + "/BcsReport")
 
-                val group = bcsgroup()
-                group.bcs = result
-                group.date = getTime
+                    val group = bcsgroup()
+                    group.bcs = result
+                    group.date = getTime
 
-                //image 라는 테이블에 json 형태로 담긴다.
-                //database.getReference().child("Profile").setValue(imageDTO);
-                //  .push()  :  데이터가 쌓인다.
+                    //image 라는 테이블에 json 형태로 담긴다.
+                    //database.getReference().child("Profile").setValue(imageDTO);
+                    //  .push()  :  데이터가 쌓인다.
 
 
-                myRef.setValue(result)
-                myRef2.push().setValue(group)
-                if(result != null) {
-                    Toast.makeText(this, "결과가 저장되었습니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "측정결과가 없습니다.", Toast.LENGTH_SHORT).show()
+                    myRef.setValue(result)
+                    myRef2.push().setValue(group)
+                    if(result != null) {
+                        Toast.makeText(this, "결과가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "측정결과가 없습니다.", Toast.LENGTH_SHORT).show()
+                    }
                 }
+                model.close()
+            } catch (e:UninitializedPropertyAccessException) {
+                Toast.makeText(this, "사진을 선택해주세요", Toast.LENGTH_SHORT).show()
 
             }
-            model.close()
+
+
+
         })
 
         binding.btnCamera.setOnClickListener {

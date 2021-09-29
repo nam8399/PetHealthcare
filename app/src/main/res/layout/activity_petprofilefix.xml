@@ -11,33 +11,19 @@
         android:id="@+id/profilebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent">
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
-        </ImageView>
-        <Button
-            android:id="@+id/btn_petprofilefix"
-            android:layout_width="100dp"
-            android:layout_marginLeft="100dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:text="프로필 수정">
-        </Button>
 
-        <Button
-            android:id="@+id/btn_petprofiledelete"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="펫 페이지"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold"
             android:layout_marginTop="10dp"
-            android:text="프로필 삭제">
-        </Button>
+            android:layout_marginBottom="10dp">
+        </TextView>
 
     </LinearLayout>
     <LinearLayout
@@ -49,7 +35,7 @@
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_marginStart="10dp"
@@ -59,6 +45,38 @@
             </androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <Button
+                    android:id="@+id/btn_petprofilefix"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="프로필 수정"></Button>
+                <Button
+                    android:id="@+id/btn_petprofiledelete"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="프로필 삭제"></Button>
+            </LinearLayout>
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </LinearLayout>
     <LinearLayout
         android:id="@+id/profileline"
@@ -95,17 +113,19 @@
         app:layout_constraintVertical_weight="1"
         app:layout_constraintTop_toBottomOf="@id/profileline"
         app:layout_constraintBottom_toBottomOf="parent">
+
         <ImageView
             android:id="@+id/btn_bcs"
-            app:layout_constraintTop_toBottomOf="@+id/profileline"
-            app:layout_constraintEnd_toStartOf="@id/btn_feed"
-            app:layout_constraintStart_toStartOf="parent"
-            android:src="@drawable/btn_bcs"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_margin="20dp"
-            tools:ignore="NotSibling">
-        </ImageView>
+            android:layout_marginTop="8dp"
+            android:src="@drawable/btn_bcs"
+            app:layout_constraintEnd_toStartOf="@id/btn_feed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileline"
+            tools:ignore="NotSibling"></ImageView>
+
         <ImageView
             android:id="@+id/btn_feed"
             android:src="@drawable/btn_feed"

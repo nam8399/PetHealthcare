@@ -83,50 +83,59 @@ public class BcsreportActivity extends AppCompatActivity {
 
 
 
-        mDatabase.getReference().child(the_uid).child("PetAccount").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
-                //데이터가 쌓이기 때문에  clear()
-                //bcsItems.clear();
-                uidList.clear();
-                for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
-                {
-                    bcsgroup bcsItem = ds.getValue(bcsgroup.class);
-                    String uidKey = ds.getKey();
-
-                    //bcsItems.add(bcsItem);
-                    uidList.add(uidKey);
-                }
-                mDatabase.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("BcsReport").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+            mDatabase.getReference().child(the_uid).child("PetAccount").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    try {
+                        //변화된 값이 DataSnapshot 으로 넘어온다.
                         //데이터가 쌓이기 때문에  clear()
-                        bcsItems.clear();
-                        //uidList.clear();
+                        //bcsItems.clear();
+                        uidList.clear();
                         for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
                         {
                             bcsgroup bcsItem = ds.getValue(bcsgroup.class);
                             String uidKey = ds.getKey();
 
-                            bcsItems.add(bcsItem);
-                            //uidList.add(uidKey);
+                            //bcsItems.add(bcsItem);
+                            uidList.add(uidKey);
                         }
-                        BcsAdapter.notifyDataSetChanged();
+
+                        mDatabase.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("BcsReport").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {  //변화된 값이 DataSnapshot 으로 넘어온다.
+                                //데이터가 쌓이기 때문에  clear()
+                                bcsItems.clear();
+                                //uidList.clear();
+                                for(DataSnapshot ds : dataSnapshot.getChildren())           //여러 값을 불러와 하나씩
+                                {
+                                    bcsgroup bcsItem = ds.getValue(bcsgroup.class);
+                                    String uidKey = ds.getKey();
+
+                                    bcsItems.add(bcsItem);
+                                    //uidList.add(uidKey);
+                                }
+                                BcsAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    } catch ( IndexOutOfBoundsException e) {
+
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                    //BcsAdapter.notifyDataSetChanged();
+                }
 
-                    }
-                });
-                //BcsAdapter.notifyDataSetChanged();
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
 
-            }
-        });
+
 
 
 

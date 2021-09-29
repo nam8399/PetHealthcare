@@ -59,6 +59,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null){
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            Toast.makeText(LoginActivity.this, "자동 로그인 되었습니다.", Toast.LENGTH_SHORT).show();
+
             startActivity(i);
         } else{
 
@@ -107,6 +109,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     // 로그인 성공
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
+                                    Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+
                                     finish();
                                 } else {
                                     Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();

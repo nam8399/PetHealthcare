@@ -186,15 +186,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_favorite_border"
-                app:layout_constraintBottom_toBottomOf="@id/textTrending"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/textTrending"
-                app:tint="@color/colorWhite" />
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -238,7 +230,7 @@
                 android:text="추천 쇼핑몰"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginLeft="20dp"
                 android:textSize="20sp"
                 tools:layout_editor_absoluteX="11dp" />
@@ -361,6 +353,7 @@
                 android:id="@+id/calendarView"
                 android:layout_width="wrap_content"
                 android:layout_height="120dp"
+                android:layout_marginTop="10dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/calendarreal"></ImageView>
 

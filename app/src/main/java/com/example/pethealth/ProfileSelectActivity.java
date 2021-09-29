@@ -79,43 +79,51 @@ public class ProfileSelectActivity extends AppCompatActivity {
 
     private void uploadImage() {
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("파일 업로드중....");
-        progressDialog.show();
+        try {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("파일 업로드중....");
+            progressDialog.show();
 
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.KOREA);
-        Date now = new Date();
-        String fileName = formatter.format(now);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String the_uid = user.getUid();
-        storageReference = FirebaseStorage.getInstance().getReference("images" + the_uid + "/1");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.KOREA);
+            Date now = new Date();
+            String fileName = formatter.format(now);
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String the_uid = user.getUid();
+            storageReference = FirebaseStorage.getInstance().getReference("images" + the_uid + "/1");
+
+            storageReference.putFile(imageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            firebaseimage.setImageURI(null);
+                            Toast.makeText(ProfileSelectActivity.this,"업로드 성공",Toast.LENGTH_SHORT).show();
+                            if (progressDialog.isShowing())
+                                progressDialog.dismiss();
+                            finish();
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
 
-        storageReference.putFile(imageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        firebaseimage.setImageURI(null);
-                        Toast.makeText(ProfileSelectActivity.this,"업로드 성공",Toast.LENGTH_SHORT).show();
-                        if (progressDialog.isShowing())
-                            progressDialog.dismiss();
-                        finish();
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+                    Toast.makeText(ProfileSelectActivity.this,"업로드 실패",Toast.LENGTH_SHORT).show();
 
 
-                if (progressDialog.isShowing())
-                    progressDialog.dismiss();
-                Toast.makeText(ProfileSelectActivity.this,"업로드 실패",Toast.LENGTH_SHORT).show();
+                } });
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(ProfileSelectActivity.this,"사진이 선택되지 않았습니다.",Toast.LENGTH_SHORT).show();
+            progressDialog.cancel();
+        }
 
 
-            }
-        });
+
+
+
 
     }
 

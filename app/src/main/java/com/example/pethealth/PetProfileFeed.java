@@ -17,6 +17,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -130,6 +131,8 @@ public class PetProfileFeed extends AppCompatActivity {
         mCalender = new GregorianCalendar();
 
         Log.v("HelloAlarmActivity", mCalender.getTime().toString());
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
 
 

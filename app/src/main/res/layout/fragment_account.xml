@@ -11,43 +11,47 @@
         android:id="@+id/profilebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp">
+        </TextView>
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pet_mytoolbar2"></ImageView>
         <ImageButton
             android:id="@+id/btn_logout"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:src="@drawable/ic_settings">
         </ImageButton>
-        <ImageView
-            android:src="@drawable/pet_mytoolbar2"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="50dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ImageView>
+
 
     </LinearLayout>
     <LinearLayout
         android:id="@+id/profilemain"
         app:layout_constraintTop_toBottomOf="@+id/profilebar"
         android:orientation="vertical"
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        android:background="@color/blue1">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="130dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/account_iv_profile"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_alignParentLeft="true"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="0dp"
@@ -55,11 +59,11 @@
 
             <Button
                 android:id="@+id/account_btn_follow_signout"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="22dp"
+                android:layout_marginBottom="15dp"
                 android:layout_toEndOf="@+id/account_iv_profile"
                 android:layout_toRightOf="@id/account_iv_profile"
                 android:background="@drawable/button_background"
@@ -67,16 +71,14 @@
 
             <Button
                 android:id="@+id/account_btn_follow_signout2"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_alignBottom="@+id/account_btn_follow_signout"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="55dp"
+                android:layout_marginLeft="153dp"
                 android:layout_marginEnd="33dp"
-                android:layout_marginBottom="22dp"
-                android:layout_toEndOf="@+id/account_btn_follow_signout"
-                android:layout_toRightOf="@id/account_iv_profile"
+                android:layout_marginBottom="13dp"
                 android:background="@drawable/button_background"
                 android:text="피드 글쓰기" />
 
@@ -86,20 +88,29 @@
                 android:layout_above="@id/account_btn_follow_signout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:layout_width="0dp"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="5dp">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/account_tv_userinfo"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="left">
+
+                    <TextView
+                        android:id="@+id/userinfo_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="사용자 이름"
                         android:textColor="@color/black">
-                    </androidx.recyclerview.widget.RecyclerView>
+                    </TextView>
+                    <TextView
+                        android:id="@+id/userinfo_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="한마디"
+                        android:textColor="@color/black">
+                    </TextView>
                 </LinearLayout>
 
             </LinearLayout>
@@ -112,11 +123,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/colorBackground">
-        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/profilecount"
@@ -174,20 +180,7 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="MissingConstraints">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    android:layout_gravity="center">
-                </TextView>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="게시물"
-                    android:layout_gravity="center">
-                </TextView>
+
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

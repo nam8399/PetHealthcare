@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -28,6 +26,7 @@ import com.example.pethealth.R;
 import com.example.pethealth.UploadActivity;
 import com.example.pethealth.UploadedImageActivity;
 import com.example.pethealth.UploadedImageAdapter;
+import com.example.pethealth.UserInfo;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +41,6 @@ import com.google.firebase.storage.StorageReference;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -58,10 +56,14 @@ public class AccountFragment extends Fragment {
     ImageView photo;
 
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView, recyclerView2;
     private List<ImageDTO> imageDTOList = new ArrayList<>();
     private List<String> uidList = new ArrayList<>();
     private FirebaseDatabase firebaseDatabase;
+    private RecyclerView.LayoutManager layoutManager;
+    private String userinfo_name;
+    private String userinfo_message;
+    private TextView user_name, user_message;
 
     private UploadedImageAdapter adapter = new UploadedImageAdapter();
     private int count = -1;
@@ -135,12 +137,43 @@ public class AccountFragment extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         recyclerView = view.findViewById(R.id.recyclerview);
 
+        user_name = view.findViewById(R.id.userinfo_name);
+        user_message = view.findViewById(R.id.userinfo_message);
+
 
         int numberOfColums = 3;
         gridLayoutManager = new GridLayoutManager(getContext(), numberOfColums);
 
+
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
+
+        firebaseDatabase.getReference().child(the_uid).child("Userinfo").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    UserInfo group = dataSnapshot.getValue(UserInfo.class);
+
+                    //각각의 값 받아오기 get어쩌구 함수들은 intakegroup.class에서 지정한것
+                    userinfo_name = group.getName();
+                    userinfo_message = group.getMessage();
+
+                    //텍스트뷰에 받아온 문자열 대입하기
+                    user_name.setText(userinfo_name);
+                    user_message.setText(userinfo_message);
+                } catch (NullPointerException e) {
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                //Log.e("MainActivity", String.valueOf(databaseError.toException())); // 에러문 출력
+            }
+        });
+
 
 
 
@@ -260,26 +293,39 @@ public class AccountFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference();
-        StorageReference submitProfile = storageReference.child("images/1");
-        submitProfile.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                //Glide.with(getContext()).load(uri).into(photo);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull @NotNull Exception e) {
+        try {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String the_uid = user.getUid();
+            photo = (ImageView) getActivity().findViewById(R.id.account_iv_profile);
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageReference = storage.getReference();
+            StorageReference submitProfile = storageReference.child("images" + the_uid + "/1");
+            submitProfile.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    try {
+                        getView().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Glide.with(getContext()).load(uri).into(photo);
 
-            }
-        });
+                            }
+                        });
+                    } catch (NullPointerException e) {
+                    }
 
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull @NotNull Exception e) {
+
+                }
+            });
+
+        } catch (NullPointerException e) {
+        }
 
     }
-
-
-
 
 }
 

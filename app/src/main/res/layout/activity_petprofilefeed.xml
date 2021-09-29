@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:background="@color/colorWhite"
     android:layout_height="match_parent"
-    tools:context=".PetProfileFeed">
+    app:layout_constraintEnd_toEndOf="parent">
 
     <LinearLayout
         android:id="@+id/profilebar"
@@ -358,6 +358,7 @@
                 android:textAlignment="viewStart" />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/layout_feed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -385,5 +386,14 @@
             android:gravity="center">
         </TextView>
     </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintTop_toTopOf="@id/layout_feed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints,NotSibling">
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
