@@ -44,6 +44,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
     </com.google.android.material.textfield.TextInputEditText>
+    <TextView
+        app:layout_constraintTop_toBottomOf="@id/dt_profile_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="#D66868"
+        android:text="사진은 정방향으로 업로드 해주세요.">
+    </TextView>
 
     <Button
         android:id="@+id/btn_profile_back"
