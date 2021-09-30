@@ -14,34 +14,37 @@
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent">
-        <TextView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="20dp">
-        </TextView>
 
         <ImageView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:src="@drawable/pet_mytoolbar2"></ImageView>
-        <ImageButton
-            android:id="@+id/btn_logout"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/ic_settings">
-        </ImageButton>
-
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_logout"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="19dp"
+        android:background="@drawable/white_rectangle_background"
+
+        android:scaleType="fitXY"
+        android:src="@drawable/logout"
+        app:layout_constraintBottom_toTopOf="@+id/profilemain"
+        app:layout_constraintEnd_toEndOf="@+id/profilebar"
+        tools:ignore="MissingConstraints"></ImageButton>
+
     <LinearLayout
         android:id="@+id/profilemain"
-        app:layout_constraintTop_toBottomOf="@+id/profilebar"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints"
-        android:background="@color/blue1">
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/profilebar"
+        tools:ignore="MissingConstraints">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="130dp">
@@ -51,10 +54,10 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_alignParentLeft="true"
+                android:layout_marginLeft="0dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="0dp"
+                android:layout_marginBottom="20dp"
                 android:src="@drawable/ic_account_circle" />
 
             <Button
@@ -83,34 +86,33 @@
                 android:text="피드 글쓰기" />
 
             <LinearLayout
-                android:gravity="center"
-                android:layout_toRightOf="@id/account_iv_profile"
-                android:layout_above="@id/account_btn_follow_signout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_above="@id/account_btn_follow_signout"
+                android:layout_toRightOf="@id/account_iv_profile"
+                android:gravity="center">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginBottom="5dp"
-                    android:orientation="vertical"
                     android:layout_weight="1"
-                    android:gravity="left">
+                    android:gravity="left"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/userinfo_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="사용자 이름"
-                        android:textColor="@color/black">
-                    </TextView>
+                        android:textColor="@color/black"></TextView>
+
                     <TextView
                         android:id="@+id/userinfo_message"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="한마디"
-                        android:textColor="@color/black">
-                    </TextView>
+                        android:textColor="@color/black"></TextView>
                 </LinearLayout>
 
             </LinearLayout>
@@ -122,7 +124,8 @@
         app:layout_constraintTop_toBottomOf="@id/profilemain"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:background="@color/skyblue"
+        android:layout_height="1dp">
     </LinearLayout>
     <LinearLayout
         android:id="@+id/profilecount"
@@ -193,8 +196,8 @@
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@color/colorBackground">
+            android:layout_height="2dp"
+            android:background="@color/skyblue">
         </LinearLayout>
     </LinearLayout>
     <FrameLayout

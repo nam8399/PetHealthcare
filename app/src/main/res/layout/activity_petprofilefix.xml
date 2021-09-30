@@ -49,25 +49,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
+
             <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <Button
+                <TextView
                     android:id="@+id/btn_petprofilefix"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="70dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginBottom="10dp"
-                    android:text="프로필 수정"></Button>
-                <Button
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:background="@drawable/button1"
+                    android:text="프로필 수정"></TextView>
+
+
+                <TextView
+                    android:gravity="center"
+                    android:textColor="@color/black"
                     android:id="@+id/btn_petprofiledelete"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:text="프로필 삭제"></Button>
+                    android:layout_height="70dp"
+                    android:background="@drawable/button1"
+                    android:text="프로필 삭제"></TextView>
             </LinearLayout>
 
 

@@ -52,7 +52,7 @@ public class PetProfileFix extends AppCompatActivity {
     private EditText et_weight2, et_kcal;
     private RadioGroup rd_ask, rd_feed;
     private RadioButton et_auto, et_manual, ask_1, ask_16, ask_18, ask_2;
-    private Button btn_petprofilefix, btn_petprofiledelete;
+    private TextView btn_petprofilefix, btn_petprofiledelete;
     private ImageView btn_bcs, btn_feed, btn_foodreport, btn_bcsreport;
     private double flt_result;
     private String str_feed;
