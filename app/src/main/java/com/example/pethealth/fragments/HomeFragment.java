@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -74,12 +75,13 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    TextView city, txttemp;
+    TextView city, txttemp, txt1, txt2, txt3;
     ImageView weatherImage;
     String nameIcon = "10d";
     String weather = "";
     ImageView calenderview;
     ImageView ib1, ib2, ib3;
+    ConstraintLayout bgimg;
 
     CardView users;
     CardView addusers;
@@ -230,29 +232,94 @@ public class HomeFragment extends Fragment {
 
 
             if (weather.equals("clear sky")) {
-                weatherImage.setImageResource(R.drawable.w01d);
+                if (nameIcon.equals("01d")) {
+                    weatherImage.setImageResource(R.drawable.wd01);
+                    bgimg.setBackgroundResource(R.drawable.wether);
+                } else if(nameIcon.equals("01n")) {
+                    DownloadImage downloadImage = new DownloadImage();
+
+                    String urlIcon = " https://openweathermap.org/img/wn/"+ nameIcon +"@2x.png";
+
+                    Bitmap bitmap = downloadImage.execute(urlIcon).get();
+
+                    weatherImage.setImageBitmap(bitmap);
+                    bgimg.setBackgroundResource(R.drawable.wdn01);
+                    city.setTextColor(Color.parseColor("#ffffff"));
+                    txt1.setTextColor(Color.parseColor("#ffffff"));
+                    txt2.setTextColor(Color.parseColor("#ffffff"));
+                    txt3.setTextColor(Color.parseColor("#ffffff"));
+                }
+
             }else if (weather.equals("few clouds")) {
-                weatherImage.setImageResource(R.drawable.w02d);
+                if (nameIcon.equals("02d")){
+                    bgimg.setBackgroundResource(R.drawable.wether);
+                    weatherImage.setImageResource(R.drawable.w02d);
+                } else if (nameIcon.equals("02n")) {
+                    DownloadImage downloadImage = new DownloadImage();
+
+                    String urlIcon = " https://openweathermap.org/img/wn/"+ nameIcon +"@2x.png";
+
+                    Bitmap bitmap = downloadImage.execute(urlIcon).get();
+
+                    weatherImage.setImageBitmap(bitmap);
+                    bgimg.setBackgroundResource(R.drawable.wetern1);
+                    city.setTextColor(Color.parseColor("#ffffff"));
+                    txt1.setTextColor(Color.parseColor("#ffffff"));
+                    txt2.setTextColor(Color.parseColor("#ffffff"));
+                    txt3.setTextColor(Color.parseColor("#ffffff"));
+
+                }
+
             }else if (weather.equals("scattered clouds")) {
-                weatherImage.setImageResource(R.drawable.w03d);
+                if (nameIcon.equals("03d")) {
+                    bgimg.setBackgroundResource(R.drawable.cd01);
+                    weatherImage.setImageResource(R.drawable.w03d);
+                } else if (nameIcon.equals("03n")) {
+                    DownloadImage downloadImage = new DownloadImage();
+
+                    String urlIcon = " https://openweathermap.org/img/wn/"+ nameIcon +"@2x.png";
+
+                    Bitmap bitmap = downloadImage.execute(urlIcon).get();
+
+                    weatherImage.setImageBitmap(bitmap);
+                    bgimg.setBackgroundResource(R.drawable.sdn01);
+                    city.setTextColor(Color.parseColor("#ffffff"));
+                    txt1.setTextColor(Color.parseColor("#ffffff"));
+                    txt2.setTextColor(Color.parseColor("#ffffff"));
+                    txt3.setTextColor(Color.parseColor("#ffffff"));
+                }
+
             }else if (weather.equals("broken clouds")) {
                 weatherImage.setImageResource(R.drawable.w04d);
+                bgimg.setBackgroundResource(R.drawable.brokencloud);
+                city.setTextColor(Color.parseColor("#ffffff"));
+                txt1.setTextColor(Color.parseColor("#ffffff"));
+                txt2.setTextColor(Color.parseColor("#ffffff"));
+                txt3.setTextColor(Color.parseColor("#ffffff"));
             }else if (weather.equals("shower rain")) {
+                bgimg.setBackgroundResource(R.drawable.showerrain);
                 weatherImage.setImageResource(R.drawable.w09d);
+                city.setTextColor(Color.parseColor("#ffffff"));
+                txt1.setTextColor(Color.parseColor("#ffffff"));
+                txt2.setTextColor(Color.parseColor("#ffffff"));
+                txt3.setTextColor(Color.parseColor("#ffffff"));
             }else if (weather.equals("rain")) {
+                bgimg.setBackgroundResource(R.drawable.rain);
                 weatherImage.setImageResource(R.drawable.w10d);
+                city.setTextColor(Color.parseColor("#ffffff"));
+                txt1.setTextColor(Color.parseColor("#ffffff"));
+                txt2.setTextColor(Color.parseColor("#ffffff"));
+                txt3.setTextColor(Color.parseColor("#ffffff"));
             }else if (weather.equals("thunderstorm")) {
+                bgimg.setBackgroundResource(R.drawable.td01);
                 weatherImage.setImageResource(R.drawable.w11d);
+                city.setTextColor(Color.parseColor("#ffffff"));
+                txt1.setTextColor(Color.parseColor("#ffffff"));
+                txt2.setTextColor(Color.parseColor("#ffffff"));
+                txt3.setTextColor(Color.parseColor("#ffffff"));
             }else if (weather.equals("snow")) {
+                bgimg.setBackgroundResource(R.drawable.snow);
                 weatherImage.setImageResource(R.drawable.w13d);
-            }else if (weather.equals("mist")) {
-                DownloadImage downloadImage = new DownloadImage();
-
-                String urlIcon = " https://openweathermap.org/img/wn/50d@2x.png";
-
-                Bitmap bitmap = downloadImage.execute(urlIcon).get();
-
-                weatherImage.setImageBitmap(bitmap);
             }else {
                 DownloadImage downloadImage = new DownloadImage();
 
@@ -291,6 +358,10 @@ public class HomeFragment extends Fragment {
         ib2.setClipToOutline(true);
         ib3 = view.findViewById(R.id.ib3);
         ib3.setClipToOutline(true);
+        bgimg = view.findViewById(R.id.text1);
+        txt1 = view.findViewById(R.id.txt1);
+        txt2 = view.findViewById(R.id.txt2);
+        txt3 = view.findViewById(R.id.txt3);
 
 
 
