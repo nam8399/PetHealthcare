@@ -30,5 +30,13 @@
         android:fontStyle="normal"
         android:fontWeight="400"
         android:font="@font/sourcesanslight" />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/nanumgothic" />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/nanumgothicbold" />
 
 </font-family>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -93,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mEtEmail = findViewById(R.id.et_email);
         mEtPwd = findViewById(R.id.et_pwd);
 
-            Button btn_login = findViewById(R.id.btn_login);
+            ImageButton btn_login = findViewById(R.id.btn_login);
             btn_login.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -128,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 
 
-        Button btn_register = findViewById(R.id.btn_register);
+        ImageButton btn_register = findViewById(R.id.btn_register);
         btn_register.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

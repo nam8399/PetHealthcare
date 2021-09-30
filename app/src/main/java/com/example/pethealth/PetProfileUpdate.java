@@ -256,7 +256,6 @@ public class PetProfileUpdate extends AppCompatActivity {
                         database.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("image").setValue(downloadUrl.toString());
                         database.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("name").setValue(et_name.getText().toString());
                         database.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("species").setValue(et_species.getSelectedItem().toString());
-                        database.getReference().child(the_uid).child("PetAccount").child(uidList.get(position)).child("weight").setValue(et_weight.getText().toString());
                         /*Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                         startActivity(intent);*/
                         finish();

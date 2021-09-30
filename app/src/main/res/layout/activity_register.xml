@@ -4,13 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/loginback"
     tools:context=".RegisterActivity">
+
+
+    <TextView
+        android:id="@+id/textHello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="회원가입"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/et_email"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/et_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="216dp"
+        android:layout_marginTop="380dp"
         android:ems="10"
         android:hint="이메일을 입력하세요."
         android:inputType="textEmailAddress"
@@ -33,7 +50,7 @@
         android:id="@+id/et_pwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="324dp"
+        android:layout_marginTop="450dp"
         android:ems="10"
         android:hint="비밀번호를 입력하세요."
         android:inputType="textPassword"
@@ -52,12 +69,26 @@
         android:text="비밀번호를 6자리 이상 입력해주세요.">
     </TextView>
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_register"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="가입완료"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:background="@drawable/button1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="회원가입"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_register"
+        app:layout_constraintStart_toStartOf="@+id/btn_register"
+        app:layout_constraintTop_toTopOf="@+id/btn_register"
+        tools:ignore="MissingConstraints">
+
+    </TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>

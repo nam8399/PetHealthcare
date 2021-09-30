@@ -77,6 +77,7 @@ public class HomeFragment extends Fragment {
     TextView city, txttemp;
     ImageView weatherImage;
     String nameIcon = "10d";
+    String weather = "";
     ImageView calenderview;
     ImageView ib1, ib2, ib3;
 
@@ -189,7 +190,11 @@ public class HomeFragment extends Fragment {
 
             JSONObject main = jsonObject.getJSONObject("main");
 
+            //JSONObject description = jsonObject.getJSONObject("weather");
+
             String temp = main.getString("temp");
+
+
 
             String humidity = main.getString("humidity");
 
@@ -197,7 +202,9 @@ public class HomeFragment extends Fragment {
 
             String visibility = jsonObject.getString("visibility");
 
-            //nameIcon = jsonObject.getJSONArray("weather").getJSONObject(0).getString("icon");
+            nameIcon = jsonObject.getJSONArray("weather").getJSONObject(0).getString("icon");
+
+            weather = jsonObject.getJSONArray("weather").getJSONObject(0).getString("description");
 
             // Log.i("Name Icon",nameIcon);
 
@@ -211,13 +218,52 @@ public class HomeFragment extends Fragment {
             txttemp.setText(temp + "°");
 
 
+            android.util.Log.i("날씨",weather);
+
             //DownloadImage downloadImage = new DownloadImage();
 
-            String urlIcon = " https://openweathermap.org/img/wn/"+ nameIcon +"@2x.png";
+            //String urlIcon = " https://openweathermap.org/img/wn/"+ nameIcon +"@2x.png";
 
             //Bitmap bitmap = downloadImage.execute(urlIcon).get();
 
             //weatherImage.setImageBitmap(bitmap);
+
+
+            if (weather.equals("clear sky")) {
+                weatherImage.setImageResource(R.drawable.w01d);
+            }else if (weather.equals("few clouds")) {
+                weatherImage.setImageResource(R.drawable.w02d);
+            }else if (weather.equals("scattered clouds")) {
+                weatherImage.setImageResource(R.drawable.w03d);
+            }else if (weather.equals("broken clouds")) {
+                weatherImage.setImageResource(R.drawable.w04d);
+            }else if (weather.equals("shower rain")) {
+                weatherImage.setImageResource(R.drawable.w09d);
+            }else if (weather.equals("rain")) {
+                weatherImage.setImageResource(R.drawable.w10d);
+            }else if (weather.equals("thunderstorm")) {
+                weatherImage.setImageResource(R.drawable.w11d);
+            }else if (weather.equals("snow")) {
+                weatherImage.setImageResource(R.drawable.w13d);
+            }else if (weather.equals("mist")) {
+                DownloadImage downloadImage = new DownloadImage();
+
+                String urlIcon = " https://openweathermap.org/img/wn/50d@2x.png";
+
+                Bitmap bitmap = downloadImage.execute(urlIcon).get();
+
+                weatherImage.setImageBitmap(bitmap);
+            }else {
+                DownloadImage downloadImage = new DownloadImage();
+
+                String urlIcon = " https://openweathermap.org/img/wn/"+ nameIcon +"@2x.png";
+
+                Bitmap bitmap = downloadImage.execute(urlIcon).get();
+
+                weatherImage.setImageBitmap(bitmap);
+            }
+
+
 
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -245,6 +291,9 @@ public class HomeFragment extends Fragment {
         ib2.setClipToOutline(true);
         ib3 = view.findViewById(R.id.ib3);
         ib3.setClipToOutline(true);
+
+
+
 
         calenderview.setOnClickListener(new View.OnClickListener() {
             @Override
