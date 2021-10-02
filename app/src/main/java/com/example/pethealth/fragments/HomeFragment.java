@@ -233,8 +233,8 @@ public class HomeFragment extends Fragment {
 
             if (weather.equals("clear sky")) {
                 if (nameIcon.equals("01d")) {
-                    weatherImage.setImageResource(R.drawable.wd01);
-                    bgimg.setBackgroundResource(R.drawable.wether);
+                    weatherImage.setImageResource(R.drawable.w01d);
+                    bgimg.setBackgroundResource(R.drawable.wd01);
                 } else if(nameIcon.equals("01n")) {
                     DownloadImage downloadImage = new DownloadImage();
 
@@ -270,7 +270,7 @@ public class HomeFragment extends Fragment {
 
                 }
 
-            }else if (weather.equals("scattered clouds")) {
+            }else if (weather.equals("scattered clouds") || weather.equals("overcast clouds")) {
                 if (nameIcon.equals("03d")) {
                     bgimg.setBackgroundResource(R.drawable.cd01);
                     weatherImage.setImageResource(R.drawable.w03d);
@@ -296,14 +296,14 @@ public class HomeFragment extends Fragment {
                 txt1.setTextColor(Color.parseColor("#ffffff"));
                 txt2.setTextColor(Color.parseColor("#ffffff"));
                 txt3.setTextColor(Color.parseColor("#ffffff"));
-            }else if (weather.equals("shower rain")) {
+            }else if (weather.equals("shower rain") || weather.equals("light rain")) {
                 bgimg.setBackgroundResource(R.drawable.showerrain);
                 weatherImage.setImageResource(R.drawable.w09d);
                 city.setTextColor(Color.parseColor("#ffffff"));
                 txt1.setTextColor(Color.parseColor("#ffffff"));
                 txt2.setTextColor(Color.parseColor("#ffffff"));
                 txt3.setTextColor(Color.parseColor("#ffffff"));
-            }else if (weather.equals("rain")) {
+            }else if (weather.equals("rain") || weather.equals("moderate rain")) {
                 bgimg.setBackgroundResource(R.drawable.rain);
                 weatherImage.setImageResource(R.drawable.w10d);
                 city.setTextColor(Color.parseColor("#ffffff"));
