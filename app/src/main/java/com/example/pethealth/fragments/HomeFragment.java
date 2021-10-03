@@ -274,7 +274,7 @@ public class HomeFragment extends Fragment {
                 if (nameIcon.equals("03d")) {
                     bgimg.setBackgroundResource(R.drawable.cd01);
                     weatherImage.setImageResource(R.drawable.w03d);
-                } else if (nameIcon.equals("03n")) {
+                } else if (nameIcon.equals("03n") || nameIcon.equals("04n")) {
                     DownloadImage downloadImage = new DownloadImage();
 
                     String urlIcon = " https://openweathermap.org/img/wn/"+ nameIcon +"@2x.png";
