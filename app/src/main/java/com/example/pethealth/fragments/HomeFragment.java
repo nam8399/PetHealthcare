@@ -242,6 +242,7 @@ public class HomeFragment extends Fragment {
 
                     Bitmap bitmap = downloadImage.execute(urlIcon).get();
 
+                    
                     weatherImage.setImageBitmap(bitmap);
                     bgimg.setBackgroundResource(R.drawable.wdn01);
                     city.setTextColor(Color.parseColor("#ffffff"));
