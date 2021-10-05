@@ -192,7 +192,6 @@ public class HomeFragment extends Fragment {
 
             JSONObject main = jsonObject.getJSONObject("main");
 
-            //JSONObject description = jsonObject.getJSONObject("weather");
 
             String temp = main.getString("temp");
 
@@ -242,7 +241,6 @@ public class HomeFragment extends Fragment {
 
                     Bitmap bitmap = downloadImage.execute(urlIcon).get();
 
-                    
                     weatherImage.setImageBitmap(bitmap);
                     bgimg.setBackgroundResource(R.drawable.wdn01);
                     city.setTextColor(Color.parseColor("#ffffff"));
