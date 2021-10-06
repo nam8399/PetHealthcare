@@ -53,8 +53,7 @@ class bcsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityBcsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
+        
 
         make_prediction = findViewById(R.id.button2)
         text_view = findViewById(R.id.textView)
