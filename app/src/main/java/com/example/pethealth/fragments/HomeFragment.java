@@ -119,6 +119,7 @@ public class HomeFragment extends Fragment {
 
             InputStream inputStream;
 
+            
             try {
                 Log.i("LINK",strings[0]);
                 url = new URL(strings[0]);
