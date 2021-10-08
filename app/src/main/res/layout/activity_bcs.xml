@@ -47,29 +47,7 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:outlineAmbientShadowColor="@color/colorWhite"
-        android:text="사진을 "
-        android:textAlignment="center"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        android:layout_marginBottom="40dp"
-        tools:ignore="MissingConstraints"
-        android:gravity="center"/>
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:outlineAmbientShadowColor="@color/colorWhite"
-        android:text="선택해 주세요"
-        android:textAlignment="center"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        tools:ignore="MissingConstraints"
-        android:gravity="center"/>
+    
 
     <ImageView
         android:id="@+id/imageView"
