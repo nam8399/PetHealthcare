@@ -96,11 +96,7 @@ public class HomeFragment extends Fragment {
     ImageView ib1, ib2, ib3;
     ConstraintLayout bgimg;
 
-    CardView users;
-    CardView addusers;
-    CardView reports;
-    CardView settings;
-    LinearLayout line_bcs;
+    
 
     String City = "";
     String Key = "4295500256eacb2f22f83bdb5e1c3e9a";
