@@ -55,7 +55,6 @@ public class AccountFragment extends Fragment {
     private final int GALLERY_CODE = 10;
     ImageView photo;
 
-
     private RecyclerView recyclerView, recyclerView2;
     private List<ImageDTO> imageDTOList = new ArrayList<>();
     private List<String> uidList = new ArrayList<>();
