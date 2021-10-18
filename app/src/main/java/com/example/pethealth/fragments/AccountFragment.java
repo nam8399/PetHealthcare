@@ -163,8 +163,7 @@ public class AccountFragment extends Fragment {
                 } catch (NullPointerException e) {
 
                 }
-
-
+                
             }
 
             @Override
@@ -172,7 +171,7 @@ public class AccountFragment extends Fragment {
                 //Log.e("MainActivity", String.valueOf(databaseError.toException())); // 에러문 출력
             }
         });
-        
+
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 gridLayoutManager.getOrientation());
