@@ -304,7 +304,6 @@ public class AccountFragment extends Fragment {
                             @Override
                             public void run() {
                                 Glide.with(getContext()).load(uri).into(photo);
-
                             }
                         });
                     } catch (NullPointerException e) {
