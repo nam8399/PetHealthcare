@@ -67,8 +67,7 @@ public class AccountFragment extends Fragment {
     private UploadedImageAdapter adapter = new UploadedImageAdapter();
     private int count = -1;
     private GridLayoutManager gridLayoutManager;
-
-
+    
     public AccountFragment() {
     }
 
@@ -89,7 +88,6 @@ public class AccountFragment extends Fragment {
                     @Override
                     public void run() {
                         Glide.with(getContext()).load(uri).into(photo);
-
                     }
                 });
             }
