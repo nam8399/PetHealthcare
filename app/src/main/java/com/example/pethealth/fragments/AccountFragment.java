@@ -67,7 +67,7 @@ public class AccountFragment extends Fragment {
     private UploadedImageAdapter adapter = new UploadedImageAdapter();
     private int count = -1;
     private GridLayoutManager gridLayoutManager;
-    
+
     public AccountFragment() {
     }
 
@@ -262,23 +262,7 @@ public class AccountFragment extends Fragment {
             }
 
         });
-/*
-        Button buttonInsert = (Button)view.findViewById(R.id.button_main_insert);
-        buttonInsert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                count++;
-
-                Dictionary data = new Dictionary(count+"","Apple" + count, "사과" + count);
-
-                //mArrayList.add(0, dict); //RecyclerView의 첫 줄에 삽입
-                mArrayList.add(data); // RecyclerView의 마지막 줄에 삽입
-
-                mAdapter.notifyDataSetChanged();             }
-        });
-
-*/
         return view;
     }
 
