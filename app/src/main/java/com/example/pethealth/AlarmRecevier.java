@@ -113,8 +113,6 @@ public class AlarmRecevier extends BroadcastReceiver {
                 });
             }
         }, 10000);
-
-
-
+        
     }
 }
