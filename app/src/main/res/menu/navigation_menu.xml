@@ -9,10 +9,10 @@
     <item
         android:id="@+id/account"
         android:icon="@drawable/user"
-        android:title="프로필" />
+        android:title="펫 프로필" />
 
     <item
         android:id="@+id/book"
         android:icon="@drawable/book"
-        android:title="설정" />
+        android:title="내 프로필" />
 </menu>
