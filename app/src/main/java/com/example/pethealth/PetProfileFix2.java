@@ -91,7 +91,6 @@ public class PetProfileFix2 extends AppCompatActivity {
         et_name = findViewById(R.id.et_name);
         et_birthday = findViewById(R.id.et_birth);
         et_species = findViewById(R.id.et_species);
-        et_weight = findViewById(R.id.et_weight);
         et_radiogroup = findViewById(R.id.et_radiogroup);
         et_gender = findViewById(R.id.et_gender);
         et_gender2 = findViewById(R.id.et_gender2);
