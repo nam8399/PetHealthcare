@@ -52,7 +52,7 @@ public class AlarmRecevier extends BroadcastReceiver {
     //오레오 이상은 반드시 채널을 설정해줘야 Notification이 작동함
     private static String CHANNEL_ID = "channel1";
     private static String CHANNEL_NAME = "Channel1";
-    
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
