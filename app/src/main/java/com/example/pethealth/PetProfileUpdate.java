@@ -63,7 +63,6 @@ public class PetProfileUpdate extends AppCompatActivity {
     private List<String> uidList = new ArrayList<>();
     ProgressDialog progressDialog;
 
-
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference conditionRef = mRootRef.child("Size");
 
