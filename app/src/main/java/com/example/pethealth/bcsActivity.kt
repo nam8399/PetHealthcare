@@ -47,8 +47,7 @@ class bcsActivity : AppCompatActivity() {
     lateinit var btnGallery: Button
     lateinit var petname: EditText
     var uidList = ArrayList<String>()
-
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBcsBinding.inflate(layoutInflater)
