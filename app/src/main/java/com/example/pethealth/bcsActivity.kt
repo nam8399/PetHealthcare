@@ -47,13 +47,12 @@ class bcsActivity : AppCompatActivity() {
     lateinit var btnGallery: Button
     lateinit var petname: EditText
     var uidList = ArrayList<String>()
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBcsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
-
         make_prediction = findViewById(R.id.button2)
         text_view = findViewById(R.id.textView)
         img_view = findViewById(R.id.imageView)
