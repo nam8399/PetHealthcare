@@ -368,7 +368,7 @@ public class HomeFragment extends Fragment {
             city.setText(City);
 
             txttemp.setText(temp + "°");
-            
+
             android.util.Log.i("날씨",weather);
 
             //DownloadImage downloadImage = new DownloadImage();
