@@ -245,9 +245,7 @@ public class PetProfileFeed extends AppCompatActivity {
 
     }
 
-
-
-
+    
 
     private void setAlarm() {
         //AlarmReceiver에 값 전달
@@ -259,7 +257,7 @@ public class PetProfileFeed extends AppCompatActivity {
         //날짜 포맷을 바꿔주는 소스코드
         //SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
        // Date datetime = null;
-        
+
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 00 );
