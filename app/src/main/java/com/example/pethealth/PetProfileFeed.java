@@ -244,7 +244,6 @@ public class PetProfileFeed extends AppCompatActivity {
 
 
     }
-    
 
     private void setAlarm() {
         //AlarmReceiver에 값 전달
