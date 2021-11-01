@@ -271,9 +271,6 @@ public class PetProfileFeed extends AppCompatActivity {
             calendar.add(Calendar.DATE, 1);
         }
 
-        // calendar.setTime(datetime);
-
-        //alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),pendingIntent);
 
         if (dailyNotify) {
 
