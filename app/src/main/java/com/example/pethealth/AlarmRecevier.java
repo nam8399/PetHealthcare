@@ -42,7 +42,7 @@ public class AlarmRecevier extends BroadcastReceiver {
     private int i = 1;
     private String intakedate = "";
     private String intakedata = "";
-    
+
     public AlarmRecevier(){ }
 
     NotificationManager manager;
@@ -91,8 +91,7 @@ public class AlarmRecevier extends BroadcastReceiver {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         String the_uid = user.getUid();
 
-
-
+                        
 
                         intakegroup group = new intakegroup();
                         group.setIntakedata(intake.toString());
