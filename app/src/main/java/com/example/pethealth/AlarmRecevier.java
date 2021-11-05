@@ -76,7 +76,6 @@ public class AlarmRecevier extends BroadcastReceiver {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String getTime = dateFormat.format(date);
 
-
         final Handler delayHandler = new Handler();
         delayHandler.postDelayed(new Runnable() {
             @Override
