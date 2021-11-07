@@ -65,8 +65,7 @@ public class ProfileMainFragment extends Fragment implements PetAdapter.ListItem
         recyclerView.setLayoutManager(layoutManager);
         arrayList = new ArrayList<>(); // PP1 객체를 담을 어레이 리스트
         ImageButton imageButton = (ImageButton) view.findViewById(R.id.btn_image);
-
-
+        
         database = FirebaseDatabase.getInstance(); // 파이어베이스 데이터베이스 연동
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String the_uid = user.getUid();
