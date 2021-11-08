@@ -131,8 +131,7 @@ class bcsActivity : AppCompatActivity() {
                 Toast.makeText(this, "사진을 선택해주세요", Toast.LENGTH_SHORT).show()
 
             }
-
-
+            
 
         })
 
