@@ -60,7 +60,6 @@ class bcsActivity : AppCompatActivity() {
 
         val labels = application.assets.open("labels.txt").bufferedReader().use { it.readText() }.split("\n")
 
-
         binding.btnGallery.setOnClickListener {
             Log.d("mssg", "button pressed")
             galleryCheckPermission()
@@ -116,7 +115,7 @@ class bcsActivity : AppCompatActivity() {
                     //image 라는 테이블에 json 형태로 담긴다.
                     //database.getReference().child("Profile").setValue(imageDTO);
                     //  .push()  :  데이터가 쌓인다.
-                    
+
                     myRef.setValue(result)
                     myRef2.push().setValue(group)
                     if(result != null) {
