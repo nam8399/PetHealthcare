@@ -65,6 +65,7 @@ class bcsActivity : AppCompatActivity() {
             galleryCheckPermission()
         }
 
+        
         make_prediction.setOnClickListener(View.OnClickListener {
 
             try {
