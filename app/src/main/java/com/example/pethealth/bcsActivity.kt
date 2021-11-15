@@ -64,6 +64,7 @@ class bcsActivity : AppCompatActivity() {
             Log.d("mssg", "button pressed")
             galleryCheckPermission()
         }
+
         
         make_prediction.setOnClickListener(View.OnClickListener {
 
