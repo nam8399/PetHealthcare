@@ -66,6 +66,7 @@ class bcsActivity : AppCompatActivity() {
         }
 
         
+
         make_prediction.setOnClickListener(View.OnClickListener {
 
             try {
