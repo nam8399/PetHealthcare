@@ -530,7 +530,7 @@ public class HomeFragment extends Fragment {
 
         try {
             address = geocoder.getFromLocation(latitude,longitude,1);
-            Log.d("찾은 주소",address.get(0).getLocality().toString());
+            Log.d("찾은 주소",address.get(0).getLocality());
             City = address.get(0).getLocality().toString();
             HomeFragment fragment = new HomeFragment();
             Bundle bundle = new Bundle();
@@ -540,6 +540,19 @@ public class HomeFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
             Log.d("test","입출력오류");
+        } catch ( NullPointerException e) {
+            try {
+                address = geocoder.getFromLocation(latitude,longitude,1);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            Log.d("찾은 주소",address.get(0).getSubLocality());
+            City = address.get(0).getSubLocality();
+            HomeFragment fragment = new HomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("title",address.get(0).getSubLocality());
+
+            fragment.setArguments(bundle);
         }
 
         calenderview.setOnClickListener(new View.OnClickListener() {
