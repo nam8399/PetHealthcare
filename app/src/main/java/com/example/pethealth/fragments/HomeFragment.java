@@ -88,6 +88,7 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    
     TextView city, txttemp, txt1, txt2, txt3;
     ImageView weatherImage;
     String nameIcon = "10d";
