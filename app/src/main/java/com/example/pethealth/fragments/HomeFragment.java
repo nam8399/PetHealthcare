@@ -418,7 +418,7 @@ public class HomeFragment extends Fragment {
 
                 }
 
-            }else if (weather.equals("scattered clouds") || weather.equals("overcast clouds")) {
+            }else if (weather.equals("scattered clouds") || weather.equals("overcast clouds")  || weather.equals("mist")) {
                 if (nameIcon.equals("03d")) {
                     bgimg.setBackgroundResource(R.drawable.cd01);
                     weatherImage.setImageResource(R.drawable.w03d);
