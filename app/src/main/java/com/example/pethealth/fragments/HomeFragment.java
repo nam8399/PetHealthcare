@@ -418,7 +418,7 @@ public class HomeFragment extends Fragment {
 
                 }
 
-            }else if (weather.equals("scattered clouds") || weather.equals("overcast clouds")  || weather.equals("mist")) {
+            }else if (weather.equals("scattered clouds") || weather.equals("overcast clouds")) {
                 if (nameIcon.equals("03d")) {
                     bgimg.setBackgroundResource(R.drawable.cd01);
                     weatherImage.setImageResource(R.drawable.w03d);
@@ -440,6 +440,19 @@ public class HomeFragment extends Fragment {
             }else if (weather.equals("broken clouds")) {
                 weatherImage.setImageResource(R.drawable.w04d);
                 bgimg.setBackgroundResource(R.drawable.brokencloud);
+                city.setTextColor(Color.parseColor("#ffffff"));
+                txt1.setTextColor(Color.parseColor("#ffffff"));
+                txt2.setTextColor(Color.parseColor("#ffffff"));
+                txt3.setTextColor(Color.parseColor("#ffffff"));
+            }else if (weather.equals("mist")) {
+                DownloadImage downloadImage = new DownloadImage();
+
+                String urlIcon = " https://openweathermap.org/img/wn/"+ nameIcon +"@2x.png";
+
+                Bitmap bitmap = downloadImage.execute(urlIcon).get();
+
+                weatherImage.setImageBitmap(bitmap);
+                bgimg.setBackgroundResource(R.drawable.fog);
                 city.setTextColor(Color.parseColor("#ffffff"));
                 txt1.setTextColor(Color.parseColor("#ffffff"));
                 txt2.setTextColor(Color.parseColor("#ffffff"));
