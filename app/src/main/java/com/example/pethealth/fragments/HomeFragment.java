@@ -540,7 +540,7 @@ public class HomeFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
             Log.d("test","입출력오류");
-        } catch ( NullPointerException e) {
+        } /*catch ( NullPointerException e) {
             try {
                 address = geocoder.getFromLocation(latitude,longitude,1);
             } catch (IOException ioException) {
@@ -553,7 +553,7 @@ public class HomeFragment extends Fragment {
             bundle.putString("title",address.get(0).getSubLocality());
 
             fragment.setArguments(bundle);
-        }
+        }*/
 
         calenderview.setOnClickListener(new View.OnClickListener() {
             @Override
