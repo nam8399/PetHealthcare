@@ -222,6 +222,7 @@ public class HomeFragment extends Fragment {
 
     }
 
+    
 
     //여기부터는 GPS 활성화를 위한 메소드들
     private void showDialogForLocationServiceSetting() {
