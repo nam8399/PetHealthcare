@@ -87,6 +87,7 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
+
     
     TextView city, txttemp, txt1, txt2, txt3;
     ImageView weatherImage;
@@ -222,7 +223,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    
+
 
     //여기부터는 GPS 활성화를 위한 메소드들
     private void showDialogForLocationServiceSetting() {
