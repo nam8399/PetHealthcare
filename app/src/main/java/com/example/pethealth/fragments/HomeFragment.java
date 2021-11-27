@@ -87,7 +87,6 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
-
     
     TextView city, txttemp, txt1, txt2, txt3;
     ImageView weatherImage;
