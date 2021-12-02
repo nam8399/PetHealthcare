@@ -39,6 +39,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+}
+repositories {
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -85,6 +89,7 @@ dependencies {
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
 
     implementation 'gun0912.ted:tedpermission:2.2.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -41,7 +41,7 @@
         android:layout_marginTop="70dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerVieww"
+        app:layout_constraintBottom_toTopOf="@+id/linechart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutHeader"
@@ -49,8 +49,8 @@
 
     </ImageView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerVieww"
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/linechart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="24dp"
