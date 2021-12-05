@@ -52,8 +52,6 @@ public class dailyfoodActivity extends AppCompatActivity {
         chart = findViewById(R.id.linechart);
 
 
-
-
         database = FirebaseDatabase.getInstance(); // 파이어베이스 데이터베이스 연동
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String the_uid = user.getUid();
