@@ -60,8 +60,7 @@ public class dailyfoodActivity extends AppCompatActivity {
 
         ArrayList<Entry> values = new ArrayList<>();
 
-
-
+        
 
         databaseReference = database.getReference(the_uid+"/intakelist"); // DB테이블 연결
         databaseReference.addValueEventListener(new ValueEventListener() {
