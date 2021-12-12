@@ -48,7 +48,6 @@ public class dailyfoodActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         //recyclerView.setLayoutManager(layoutManager);
         arrayList = new ArrayList<>();
-
         
         chart = findViewById(R.id.linechart);
 
@@ -56,6 +55,7 @@ public class dailyfoodActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String the_uid = user.getUid();
 
+        
         //adapter = new dailyfoodAdapter(arrayList, uidList);
         //recyclerView.setAdapter(adapter); //리사이클럽에 어댑터 연결
 
