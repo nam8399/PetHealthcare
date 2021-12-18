@@ -84,6 +84,7 @@ public class HomeFragment extends Fragment {
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
 
+    
     public HomeFragment() {
         // Required empty public constructor
     }
